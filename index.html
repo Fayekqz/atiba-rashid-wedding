@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Wedding Invitation – Atiba & Rashid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green-deep:  #1a3a2a;
+      --green-mid:   #1f4433;
+      --green-light: #2a5c44;
+      --gold:        #c9a84c;
+      --gold-light:  #e4c97a;
+      --gold-pale:   #f5e8c0;
+      --cream:       #fdf8ef;
+      --text-gold:   #d4af37;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--green-deep);
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--gold-pale);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLL SNAP CONTAINER ─── */
+    .pages {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── GENERAL PAGE ─── */
+    .page {
+      min-height: 100svh;
+      width: 100%;
+      max-width: 430px;
+      margin: 0 auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      overflow: hidden;
+    }
+
+    /* ─── DECORATIVE SVG BOTANICALS ─── */
+    .botanical-top {
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .botanical-bottom {
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      z-index: 0;
+      transform: rotate(180deg);
+    }
+
+    .botanical-left {
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    .botanical-right {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%) scaleX(-1);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    .content { position: relative; z-index: 1; text-align: center; width: 100%; }
+
+    /* ─── BISMILLAH ─── */
+    .bismillah {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 20px rgba(201,168,76,0.4);
+    }
+
+    /* ─── DIVIDERS ─── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px auto;
+      width: 80%;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .divider-diamond {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ─── HERO PAGE ─── */
+    #hero {
+      background: radial-gradient(ellipse at center top, var(--green-light) 0%, var(--green-deep) 70%);
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+
+    .invite-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .couple-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.4rem;
+      line-height: 1.1;
+      color: var(--gold-light);
+      text-shadow: 0 2px 20px rgba(201,168,76,0.5);
+      margin: 10px 0;
+    }
+
+    .ampersand {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.4rem;
+      color: var(--gold);
+      display: block;
+      margin: -4px 0;
+    }
+
+    .date-badge {
+      margin: 20px auto;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      width: 110px; height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(201,168,76,0.08);
+      box-shadow: 0 0 30px rgba(201,168,76,0.2), inset 0 0 20px rgba(201,168,76,0.05);
+    }
+    .date-day {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+    .date-month {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      margin: 2px 0;
+    }
+    .date-year {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      color: var(--gold);
+    }
+
+    .hero-tagline {
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(245,232,192,0.75);
+      margin-top: 14px;
+      letter-spacing: 1px;
+    }
+
+    /* ─── SCROLL HINT ─── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      animation: bounce 2s infinite;
+      z-index: 2;
+    }
+    .scroll-hint span {
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .scroll-arrow {
+      width: 20px; height: 20px;
+      border-right: 1.5px solid var(--gold);
+      border-bottom: 1.5px solid var(--gold);
+      transform: rotate(45deg);
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── INTRO PAGE ─── */
+    #intro {
+      background: linear-gradient(180deg, var(--green-deep) 0%, var(--green-mid) 100%);
+    }
+    .intro-text {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: rgba(245,232,192,0.85);
+      font-style: italic;
+      text-align: center;
+    }
+    .family-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--gold-light);
+      letter-spacing: 1px;
+      margin: 4px 0;
+    }
+    .bride-block, .groom-block {
+      margin: 18px 0;
+    }
+    .role-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .person-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.4rem;
+      color: var(--gold-light);
+      line-height: 1.1;
+      text-shadow: 0 2px 10px rgba(201,168,76,0.3);
+    }
+    .person-lineage {
+      font-size: 0.8rem;
+      color: rgba(245,232,192,0.65);
+      font-style: italic;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── EVENTS PAGE ─── */
+    #events {
+      background: radial-gradient(ellipse at bottom center, var(--green-light) 0%, var(--green-deep) 60%);
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .section-heading {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.4rem;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+    }
+
+    .event-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 16px;
+      padding: 22px 20px;
+      margin: 14px 0;
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+      backdrop-filter: blur(4px);
+    }
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .event-icon {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .event-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .event-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.9rem;
+      color: var(--gold-light);
+      margin-bottom: 10px;
+      line-height: 1.1;
+    }
+    .event-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 6px 0;
+    }
+    .event-detail-icon {
+      color: var(--gold);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .event-detail-text {
+      font-size: 0.85rem;
+      color: rgba(245,232,192,0.8);
+      line-height: 1.4;
+    }
+    .event-detail-text strong {
+      color: var(--gold-pale);
+      font-weight: 500;
+    }
+
+    /* ─── MAP BUTTON ─── */
+    .map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, var(--gold) 0%, #a07820 100%);
+      color: var(--green-deep);
+      text-decoration: none;
+      border-radius: 50px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(201,168,76,0.3);
+    }
+    .map-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+
+    /* ─── COUNTDOWN ─── */
+    #countdown {
+      background: linear-gradient(180deg, var(--green-mid) 0%, var(--green-deep) 100%);
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+      width: 100%;
+    }
+    .countdown-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 12px;
+      padding: 14px 6px;
+      text-align: center;
+    }
+    .countdown-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      display: block;
+      line-height: 1;
+    }
+    .countdown-label {
+      font-size: 0.55rem;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .rsvp-note {
+      font-style: italic;
+      font-size: 0.85rem;
+      color: rgba(245,232,192,0.65);
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    /* ─── FOOTER PAGE ─── */
+    #footer-page {
+      background: var(--green-deep);
+      min-height: 50svh;
+      padding: 50px 24px 40px;
+    }
+
+    .footer-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: rgba(245,232,192,0.65);
+      line-height: 1.8;
+      margin: 16px 0 24px;
+    }
+
+    .footer-couple {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: var(--gold);
+    }
+
+    .footer-date-line {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: rgba(201,168,76,0.6);
+      margin-top: 10px;
+    }
+
+    /* ─── FLORAL ORNAMENT SVGs ─── */
+    .ornament-center {
+      margin: 10px auto;
+      display: block;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Bismillah Arabic */
+    .arabic-bismillah {
+      font-size: 1.6rem;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 15px rgba(201,168,76,0.3);
+      direction: rtl;
+      font-family: serif;
+    }
+
+    /* Gold shimmer line */
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .shimmer-text {
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, #fff9e6 50%, var(--gold-light) 60%, var(--gold) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+    }
+
+    /* Floral ring decoration */
+    .floral-ring {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 10px;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+<div class="pages">
+
+  <!-- ══════════ PAGE 1: HERO ══════════ -->
+  <section class="page" id="hero">
+
+    <!-- Top botanical -->
+    <svg class="botanical-top" viewBox="0 0 430 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin slice">
+      <!-- Left branch -->
+      <g opacity="0.75">
+        <path d="M-10,0 Q40,40 20,80 Q60,30 100,50 Q70,20 110,10" fill="none" stroke="#2d6b4a" stroke-width="2"/>
+        <ellipse cx="20" cy="50" rx="22" ry="12" fill="#2a5c44" transform="rotate(-30,20,50)" opacity="0.9"/>
+        <ellipse cx="60" cy="35" rx="28" ry="13" fill="#336b52" transform="rotate(-15,60,35)" opacity="0.85"/>
+        <ellipse cx="100" cy="45" rx="20" ry="10" fill="#2a5c44" transform="rotate(10,100,45)" opacity="0.8"/>
+        <ellipse cx="40" cy="65" rx="18" ry="9" fill="#1f4433" transform="rotate(-40,40,65)" opacity="0.7"/>
+        <!-- flowers -->
+        <circle cx="90" cy="22" r="5" fill="#f0d9c8" opacity="0.9"/>
+        <circle cx="90" cy="22" r="2" fill="#e8b89a" opacity="1"/>
+        <circle cx="115" cy="38" r="4" fill="#f0d9c8" opacity="0.8"/>
+        <circle cx="115" cy="38" r="1.5" fill="#e8b89a" opacity="1"/>
+      </g>
+      <!-- Right branch (mirrored) -->
+      <g transform="scale(-1,1) translate(-430,0)" opacity="0.75">
+        <path d="M-10,0 Q40,40 20,80 Q60,30 100,50 Q70,20 110,10" fill="none" stroke="#2d6b4a" stroke-width="2"/>
+        <ellipse cx="20" cy="50" rx="22" ry="12" fill="#2a5c44" transform="rotate(-30,20,50)" opacity="0.9"/>
+        <ellipse cx="60" cy="35" rx="28" ry="13" fill="#336b52" transform="rotate(-15,60,35)" opacity="0.85"/>
+        <ellipse cx="100" cy="45" rx="20" ry="10" fill="#2a5c44" transform="rotate(10,100,45)" opacity="0.8"/>
+        <ellipse cx="40" cy="65" rx="18" ry="9" fill="#1f4433" transform="rotate(-40,40,65)" opacity="0.7"/>
+        <circle cx="90" cy="22" r="5" fill="#f0d9c8" opacity="0.9"/>
+        <circle cx="90" cy="22" r="2" fill="#e8b89a" opacity="1"/>
+        <circle cx="115" cy="38" r="4" fill="#f0d9c8" opacity="0.8"/>
+        <circle cx="115" cy="38" r="1.5" fill="#e8b89a" opacity="1"/>
+      </g>
+    </svg>
+
+    <div class="content fade-in visible">
+      <div class="arabic-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="invite-label">Together With Their Families</div>
+
+      <!-- Floral wreath SVG around couple names -->
+      <svg viewBox="0 0 300 220" width="300" height="220" class="ornament-center" xmlns="http://www.w3.org/2000/svg">
+        <!-- Wreath leaves -->
+        <g opacity="0.8">
+          <!-- top arc leaves -->
+          <ellipse cx="150" cy="18" rx="18" ry="8" fill="#2a5c44" transform="rotate(-5,150,18)"/>
+          <ellipse cx="130" cy="22" rx="16" ry="7" fill="#336b52" transform="rotate(-20,130,22)"/>
+          <ellipse cx="170" cy="22" rx="16" ry="7" fill="#336b52" transform="rotate(20,170,22)"/>
+          <ellipse cx="112" cy="34" rx="14" ry="6" fill="#2a5c44" transform="rotate(-40,112,34)"/>
+          <ellipse cx="188" cy="34" rx="14" ry="6" fill="#2a5c44" transform="rotate(40,188,34)"/>
+          <!-- side leaves -->
+          <ellipse cx="94" cy="55" rx="13" ry="6" fill="#336b52" transform="rotate(-60,94,55)"/>
+          <ellipse cx="206" cy="55" rx="13" ry="6" fill="#336b52" transform="rotate(60,206,55)"/>
+          <ellipse cx="82" cy="80" rx="12" ry="5" fill="#2a5c44" transform="rotate(-75,82,80)"/>
+          <ellipse cx="218" cy="80" rx="12" ry="5" fill="#2a5c44" transform="rotate(75,218,80)"/>
+          <ellipse cx="78" cy="108" rx="12" ry="5" fill="#336b52" transform="rotate(-85,78,108)"/>
+          <ellipse cx="222" cy="108" rx="12" ry="5" fill="#336b52" transform="rotate(85,222,108)"/>
+          <ellipse cx="82" cy="136" rx="12" ry="5" fill="#2a5c44" transform="rotate(-75,82,136)"/>
+          <ellipse cx="218" cy="136" rx="12" ry="5" fill="#2a5c44" transform="rotate(75,218,136)"/>
+          <ellipse cx="93" cy="162" rx="13" ry="6" fill="#336b52" transform="rotate(-60,93,162)"/>
+          <ellipse cx="207" cy="162" rx="13" ry="6" fill="#336b52" transform="rotate(60,207,162)"/>
+          <!-- bottom arc leaves -->
+          <ellipse cx="112" cy="184" rx="14" ry="6" fill="#2a5c44" transform="rotate(-40,112,184)"/>
+          <ellipse cx="188" cy="184" rx="14" ry="6" fill="#2a5c44" transform="rotate(40,188,184)"/>
+          <ellipse cx="130" cy="196" rx="16" ry="7" fill="#336b52" transform="rotate(-20,130,196)"/>
+          <ellipse cx="170" cy="196" rx="16" ry="7" fill="#336b52" transform="rotate(20,170,196)"/>
+          <ellipse cx="150" cy="200" rx="18" ry="8" fill="#2a5c44" transform="rotate(-5,150,200)"/>
+        </g>
+        <!-- Flowers -->
+        <g>
+          <circle cx="150" cy="12" r="5" fill="#f5e6d8" opacity="0.95"/><circle cx="150" cy="12" r="2" fill="#d4a090" opacity="1"/>
+          <circle cx="98" cy="46" r="5" fill="#f5e6d8" opacity="0.95"/><circle cx="98" cy="46" r="2" fill="#d4a090" opacity="1"/>
+          <circle cx="202" cy="46" r="5" fill="#f5e6d8" opacity="0.95"/><circle cx="202" cy="46" r="2" fill="#d4a090" opacity="1"/>
+          <circle cx="78" cy="108" r="4" fill="#f5e6d8" opacity="0.9"/><circle cx="78" cy="108" r="1.5" fill="#d4a090" opacity="1"/>
+          <circle cx="222" cy="108" r="4" fill="#f5e6d8" opacity="0.9"/><circle cx="222" cy="108" r="1.5" fill="#d4a090" opacity="1"/>
+          <circle cx="98" cy="170" r="5" fill="#f5e6d8" opacity="0.95"/><circle cx="98" cy="170" r="2" fill="#d4a090" opacity="1"/>
+          <circle cx="202" cy="170" r="5" fill="#f5e6d8" opacity="0.95"/><circle cx="202" cy="170" r="2" fill="#d4a090" opacity="1"/>
+          <circle cx="150" cy="204" r="5" fill="#f5e6d8" opacity="0.95"/><circle cx="150" cy="204" r="2" fill="#d4a090" opacity="1"/>
+        </g>
+        <!-- Names inside wreath -->
+        <text x="150" y="82" text-anchor="middle" font-family="'Great Vibes', cursive" font-size="38" fill="#e4c97a">Atiba</text>
+        <text x="150" y="118" text-anchor="middle" font-family="'Great Vibes', cursive" font-size="26" fill="#c9a84c">&amp;</text>
+        <text x="150" y="155" text-anchor="middle" font-family="'Great Vibes', cursive" font-size="38" fill="#e4c97a">Rashid</text>
+      </svg>
+
+      <div class="date-badge">
+        <span class="date-day">10</span>
+        <span class="date-month">January</span>
+        <span class="date-year">2027</span>
+      </div>
+
+      <p class="hero-tagline">— Invite you to celebrate their union —</p>
+    </div>
+
+    <div class="scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+
+    <!-- Bottom botanical -->
+    <svg class="botanical-bottom" viewBox="0 0 430 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax slice">
+      <g opacity="0.5">
+        <path d="M180,80 Q200,50 220,70 Q240,40 260,60" fill="none" stroke="#2d6b4a" stroke-width="1.5"/>
+        <ellipse cx="200" cy="62" rx="20" ry="9" fill="#2a5c44" transform="rotate(-20,200,62)"/>
+        <ellipse cx="240" cy="52" rx="18" ry="8" fill="#336b52" transform="rotate(15,240,52)"/>
+        <circle cx="258" cy="58" r="4" fill="#f0d9c8" opacity="0.8"/>
+        <circle cx="258" cy="58" r="1.5" fill="#e8b89a"/>
+      </g>
+    </svg>
+  </section>
+
+  <!-- ══════════ PAGE 2: BRIDE & GROOM ══════════ -->
+  <section class="page" id="intro">
+    <svg class="botanical-top" viewBox="0 0 430 90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin slice">
+      <g opacity="0.6">
+        <ellipse cx="60" cy="20" rx="35" ry="14" fill="#2a5c44" transform="rotate(-15,60,20)"/>
+        <ellipse cx="30" cy="40" rx="28" ry="12" fill="#336b52" transform="rotate(-35,30,40)"/>
+        <ellipse cx="100" cy="30" rx="30" ry="13" fill="#2a5c44" transform="rotate(10,100,30)"/>
+        <circle cx="105" cy="12" r="6" fill="#f5e6d8" opacity="0.9"/><circle cx="105" cy="12" r="2.5" fill="#d4a090"/>
+        <!-- right -->
+        <ellipse cx="370" cy="20" rx="35" ry="14" fill="#2a5c44" transform="rotate(15,370,20)"/>
+        <ellipse cx="400" cy="40" rx="28" ry="12" fill="#336b52" transform="rotate(35,400,40)"/>
+        <ellipse cx="330" cy="30" rx="30" ry="13" fill="#2a5c44" transform="rotate(-10,330,30)"/>
+        <circle cx="325" cy="12" r="6" fill="#f5e6d8" opacity="0.9"/><circle cx="325" cy="12" r="2.5" fill="#d4a090"/>
+      </g>
+    </svg>
+
+    <div class="content">
+      <div class="section-title fade-in">With the blessings of Allah</div>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="bride-block fade-in">
+        <div class="role-label">The Bride</div>
+        <div class="person-name shimmer-text">Atiba Quazi</div>
+        <div class="person-lineage">D/o Late Naimoddin Quazi</div>
+      </div>
+
+      <!-- Ornamental separator -->
+      <svg viewBox="0 0 200 50" width="200" class="ornament-center fade-in" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="25" x2="80" y2="25" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+        <path d="M85,15 Q100,5 115,15 Q100,10 85,15 Z" fill="#c9a84c" opacity="0.7"/>
+        <circle cx="100" cy="25" r="4" fill="#c9a84c" opacity="0.9"/>
+        <path d="M85,35 Q100,45 115,35 Q100,40 85,35 Z" fill="#c9a84c" opacity="0.7"/>
+        <line x1="120" y1="25" x2="200" y2="25" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+        <!-- leaves -->
+        <ellipse cx="40" cy="22" rx="12" ry="5" fill="#2a5c44" transform="rotate(-10,40,22)"/>
+        <ellipse cx="160" cy="22" rx="12" ry="5" fill="#2a5c44" transform="rotate(10,160,22)"/>
+        <circle cx="40" cy="17" r="3" fill="#f5e6d8" opacity="0.8"/>
+        <circle cx="160" cy="17" r="3" fill="#f5e6d8" opacity="0.8"/>
+      </svg>
+
+      <div class="groom-block fade-in">
+        <div class="role-label">The Groom</div>
+        <div class="person-name shimmer-text">Rashid Khan</div>
+        <div class="person-lineage">S/o Shareequllah Khan</div>
+      </div>
+
+      <div class="divider fade-in">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <p class="intro-text fade-in">
+        "And We created you in pairs"<br/>
+        <em>— Surah An-Naba, 78:8</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════ PAGE 3: EVENTS ══════════ -->
+  <section class="page" id="events">
+    <svg class="botanical-top" viewBox="0 0 430 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin slice" style="opacity:0.5">
+      <ellipse cx="215" cy="10" rx="80" ry="22" fill="#2a5c44"/>
+      <ellipse cx="175" cy="22" rx="40" ry="16" fill="#336b52"/>
+      <ellipse cx="255" cy="22" rx="40" ry="16" fill="#336b52"/>
+      <circle cx="175" cy="8" r="5" fill="#f5e6d8" opacity="0.8"/><circle cx="175" cy="8" r="2" fill="#d4a090"/>
+      <circle cx="255" cy="8" r="5" fill="#f5e6d8" opacity="0.8"/><circle cx="255" cy="8" r="2" fill="#d4a090"/>
+    </svg>
+
+    <div class="content" style="padding-top:30px;">
+      <div class="section-title fade-in">You Are Invited</div>
+      <div class="section-heading fade-in">Our Celebrations</div>
+
+      <!-- NIKAH CARD -->
+      <div class="event-card fade-in">
+        <span class="event-icon">🕌</span>
+        <div class="event-name">Aqd e Nikah</div>
+        <div class="event-title">Nikah Ceremony</div>
+
+        <div class="event-detail">
+          <span class="event-detail-icon">📅</span>
+          <span class="event-detail-text"><strong>Sunday, 10th January 2027</strong></span>
+        </div>
+        <div class="event-detail">
+          <span class="event-detail-icon">🕐</span>
+          <span class="event-detail-text">After Zuhr Prayer (Post Noon)</span>
+        </div>
+        <div class="event-detail">
+          <span class="event-detail-icon">📍</span>
+          <span class="event-detail-text"><strong>Masjid e Abubakar</strong><br/>Bilal Nagar</span>
+        </div>
+      </div>
+
+      <!-- WEDDING CARD -->
+      <div class="event-card fade-in">
+        <span class="event-icon">🌿</span>
+        <div class="event-name">Walima Reception</div>
+        <div class="event-title">Wedding Celebration</div>
+
+        <div class="event-detail">
+          <span class="event-detail-icon">📅</span>
+          <span class="event-detail-text"><strong>Sunday, 10th January 2027</strong></span>
+        </div>
+        <div class="event-detail">
+          <span class="event-detail-icon">🕖</span>
+          <span class="event-detail-text">Evening Onwards</span>
+        </div>
+        <div class="event-detail">
+          <span class="event-detail-icon">📍</span>
+          <span class="event-detail-text"><strong>Sahil Lawn</strong><br/>Badnera</span>
+        </div>
+
+        <a href="https://share.google/cPaxANpkdfNBbzW3W" target="_blank" class="map-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          View on Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ PAGE 4: COUNTDOWN ══════════ -->
+  <section class="page" id="countdown">
+    <svg class="botanical-left" viewBox="0 0 60 240" width="60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50,0 Q20,60 40,120 Q10,180 30,240" fill="none" stroke="#2d6b4a" stroke-width="1.5"/>
+      <ellipse cx="30" cy="40" rx="20" ry="8" fill="#2a5c44" transform="rotate(-50,30,40)"/>
+      <ellipse cx="20" cy="80" rx="22" ry="9" fill="#336b52" transform="rotate(-70,20,80)"/>
+      <ellipse cx="35" cy="120" rx="20" ry="8" fill="#2a5c44" transform="rotate(-40,35,120)"/>
+      <ellipse cx="18" cy="160" rx="22" ry="9" fill="#336b52" transform="rotate(-65,18,160)"/>
+      <ellipse cx="32" cy="200" rx="18" ry="7" fill="#2a5c44" transform="rotate(-45,32,200)"/>
+      <circle cx="35" cy="30" r="4" fill="#f5e6d8" opacity="0.8"/><circle cx="35" cy="30" r="1.5" fill="#d4a090"/>
+      <circle cx="20" cy="110" r="4" fill="#f5e6d8" opacity="0.8"/><circle cx="20" cy="110" r="1.5" fill="#d4a090"/>
+      <circle cx="30" cy="190" r="4" fill="#f5e6d8" opacity="0.8"/><circle cx="30" cy="190" r="1.5" fill="#d4a090"/>
+    </svg>
+
+    <svg class="botanical-right" viewBox="0 0 60 240" width="60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50,0 Q20,60 40,120 Q10,180 30,240" fill="none" stroke="#2d6b4a" stroke-width="1.5"/>
+      <ellipse cx="30" cy="40" rx="20" ry="8" fill="#2a5c44" transform="rotate(-50,30,40)"/>
+      <ellipse cx="20" cy="80" rx="22" ry="9" fill="#336b52" transform="rotate(-70,20,80)"/>
+      <ellipse cx="35" cy="120" rx="20" ry="8" fill="#2a5c44" transform="rotate(-40,35,120)"/>
+      <ellipse cx="18" cy="160" rx="22" ry="9" fill="#336b52" transform="rotate(-65,18,160)"/>
+      <ellipse cx="32" cy="200" rx="18" ry="7" fill="#2a5c44" transform="rotate(-45,32,200)"/>
+      <circle cx="35" cy="30" r="4" fill="#f5e6d8" opacity="0.8"/><circle cx="35" cy="30" r="1.5" fill="#d4a090"/>
+      <circle cx="20" cy="110" r="4" fill="#f5e6d8" opacity="0.8"/><circle cx="20" cy="110" r="1.5" fill="#d4a090"/>
+      <circle cx="30" cy="190" r="4" fill="#f5e6d8" opacity="0.8"/><circle cx="30" cy="190" r="1.5" fill="#d4a090"/>
+    </svg>
+
+    <div class="content">
+      <div class="section-title fade-in">The Big Day Arrives In</div>
+      <div class="section-heading fade-in">Counting Down</div>
+
+      <div class="countdown-grid" id="timerGrid">
+        <div class="countdown-box">
+          <span class="countdown-num" id="days">--</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-box">
+          <span class="countdown-num" id="hours">--</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-box">
+          <span class="countdown-num" id="minutes">--</span>
+          <span class="countdown-label">Mins</span>
+        </div>
+        <div class="countdown-box">
+          <span class="countdown-num" id="seconds">--</span>
+          <span class="countdown-label">Secs</span>
+        </div>
+      </div>
+
+      <div class="divider fade-in">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <p class="rsvp-note fade-in">
+        We joyfully request the honour of your presence<br/>as we celebrate this blessed union.<br/><br/>
+        <em>Your prayers and blessings mean the world to us.</em>
+      </p>
+
+      <!-- Save to Calendar -->
+      <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20270110T120000%0ADTEND:20270110T230000%0ASUMMARY:Atiba %26 Rashid Wedding%0ADESCRIPTION:Nikah at Masjid e Abubakar%2C Bilal Nagar. Reception at Sahil Lawn%2C Badnera.%0AEND:VEVENT%0AEND:VCALENDAR"
+         download="AtibaxRashid_Wedding.ics"
+         class="map-btn" style="margin-top:20px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Save the Date
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════ PAGE 5: CLOSING ══════════ -->
+  <section class="page" id="footer-page">
+    <svg class="botanical-top" viewBox="0 0 430 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin slice">
+      <g opacity="0.65">
+        <path d="M0,30 Q80,0 160,30 Q215,10 270,30 Q350,0 430,30" fill="none" stroke="#2d6b4a" stroke-width="1.5"/>
+        <ellipse cx="80" cy="20" rx="35" ry="14" fill="#2a5c44" transform="rotate(-8,80,20)"/>
+        <ellipse cx="160" cy="25" rx="30" ry="12" fill="#336b52" transform="rotate(5,160,25)"/>
+        <ellipse cx="215" cy="15" rx="28" ry="11" fill="#2a5c44"/>
+        <ellipse cx="270" cy="25" rx="30" ry="12" fill="#336b52" transform="rotate(-5,270,25)"/>
+        <ellipse cx="350" cy="20" rx="35" ry="14" fill="#2a5c44" transform="rotate(8,350,20)"/>
+        <!-- flowers -->
+        <circle cx="130" cy="8" r="6" fill="#f5e6d8" opacity="0.9"/><circle cx="130" cy="8" r="2.5" fill="#d4a090"/>
+        <circle cx="215" cy="5" r="7" fill="#f5e6d8" opacity="0.9"/><circle cx="215" cy="5" r="3" fill="#d4a090"/>
+        <circle cx="300" cy="8" r="6" fill="#f5e6d8" opacity="0.9"/><circle cx="300" cy="8" r="2.5" fill="#d4a090"/>
+        <!-- small buds -->
+        <circle cx="60" cy="12" r="4" fill="#f5e6d8" opacity="0.7"/><circle cx="60" cy="12" r="1.5" fill="#d4a090"/>
+        <circle cx="370" cy="12" r="4" fill="#f5e6d8" opacity="0.7"/><circle cx="370" cy="12" r="1.5" fill="#d4a090"/>
+      </g>
+    </svg>
+
+    <div class="content" style="padding-top:60px;">
+
+      <div class="divider fade-in">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="footer-couple fade-in shimmer-text">Atiba & Rashid</div>
+
+      <div class="footer-date-line fade-in" style="margin-top:8px;">10 · 01 · 2027</div>
+
+      <div class="divider fade-in">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <p class="footer-quote fade-in">
+        "And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquility with them, and He has put love and mercy between your hearts."
+        <br/><br/><em>— Surah Ar-Rum, 30:21</em>
+      </p>
+
+      <div class="divider fade-in">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- Summary card -->
+      <div class="event-card fade-in" style="text-align:center; margin-top:10px;">
+        <div class="event-name" style="text-align:center; margin-bottom:14px;">In Summary</div>
+
+        <div class="event-detail" style="justify-content:center;">
+          <span class="event-detail-icon">🕌</span>
+          <span class="event-detail-text">
+            <strong>Aqd e Nikah</strong><br/>
+            Masjid e Abubakar, Bilal Nagar<br/>
+            <em>After Zuhr — 10 Jan 2027</em>
+          </span>
+        </div>
+
+        <div style="height:12px; border-left: 1px dashed rgba(201,168,76,0.3); margin: 8px auto; width:1px;"></div>
+
+        <div class="event-detail" style="justify-content:center;">
+          <span class="event-detail-icon">🌹</span>
+          <span class="event-detail-text">
+            <strong>Wedding Reception</strong><br/>
+            Sahil Lawn, Badnera<br/>
+            <em>Evening — 10 Jan 2027</em>
+          </span>
+        </div>
+
+        <a href="https://share.google/cPaxANpkdfNBbzW3W" target="_blank" class="map-btn" style="margin-top:16px; display:inline-flex;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          Venue Location
+        </a>
+      </div>
+
+      <p class="rsvp-note fade-in" style="margin-top:24px; font-size:0.75rem;">
+        JazakAllah Khair · جزاك الله خيراً
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ─── COUNTDOWN SCRIPT ─── -->
+<script>
+  // Target: 10 Jan 2027 12:00 PM (noon — Zuhr time approx)
+  const wedding = new Date('2027-01-10T12:00:00');
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = wedding - now;
+    if (diff <= 0) {
+      document.getElementById('days').textContent = '0';
+      document.getElementById('hours').textContent = '0';
+      document.getElementById('minutes').textContent = '0';
+      document.getElementById('seconds').textContent = '0';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('days').textContent    = String(d).padStart(2,'0');
+    document.getElementById('hours').textContent   = String(h).padStart(2,'0');
+    document.getElementById('minutes').textContent = String(m).padStart(2,'0');
+    document.getElementById('seconds').textContent = String(s).padStart(2,'0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ─── SCROLL FADE-IN ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
