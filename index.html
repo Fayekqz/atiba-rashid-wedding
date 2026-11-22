@@ -1,500 +1,660 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Wedding Invitation – Atiba & Rashid</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --offwhite:    #f7f3ec;
-      --cream:       #fdf9f3;
-      --cream-dark:  #ede8de;
-      --green-deep:  #1a3a2a;
-      --green-mid:   #1f4433;
-      --green-light: #2a5c44;
-      --green-pale:  #d4e8dd;
-      --gold:        #b8862a;
-      --gold-mid:    #c9982e;
-      --gold-light:  #d4aa50;
-      --gold-pale:   #f0deb0;
-      --text-dark:   #1a3a2a;
-      --text-mid:    #2d5240;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Atiba & Rashid — Wedding Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════
+   ROOT VARIABLES
+═══════════════════════════ */
+:root{
+  --cream:    #fdf9f2;
+  --offwhite: #f5f0e8;
+  --parchment:#ede6d6;
+  --green:    #1a3a2a;
+  --green2:   #1f4433;
+  --green3:   #2a5c44;
+  --gold:     #b8862a;
+  --gold2:    #c9982e;
+  --gold3:    #e4c170;
+  --goldpal:  #f0deb0;
+  --text:     #1a3a2a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--cream);
+  font-family:'Cormorant Garamond',serif;
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+}
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ═══════════════════════════
+   CANVAS FOR PARTICLES
+═══════════════════════════ */
+#particleCanvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1;
+}
 
-    body {
-      background: var(--offwhite);
-      font-family: 'Cormorant Garamond', serif;
-      color: var(--text-dark);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+/* ═══════════════════════════
+   SPLASH / ENVELOPE SCREEN
+═══════════════════════════ */
+#splash{
+  position:fixed;inset:0;z-index:1000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--green);
+  transition:opacity 0.9s ease, visibility 0.9s;
+}
+#splash.hidden{opacity:0;visibility:hidden;}
 
-    .pages { display: flex; flex-direction: column; }
+.env-wrap{
+  position:relative;width:260px;height:180px;
+  cursor:pointer;
+  filter:drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+}
+/* envelope body */
+.env-body{
+  position:absolute;bottom:0;left:0;width:100%;height:140px;
+  background:var(--offwhite);
+  border-radius:4px 4px 10px 10px;
+  overflow:hidden;
+}
+.env-body::before{/* left flap */
+  content:'';position:absolute;bottom:0;left:0;
+  border-style:solid;border-width:70px 130px 0 0;
+  border-color:transparent var(--parchment) transparent transparent;
+}
+.env-body::after{/* right flap */
+  content:'';position:absolute;bottom:0;right:0;
+  border-style:solid;border-width:70px 0 0 130px;
+  border-color:transparent transparent transparent var(--parchment);
+}
+/* gold seal */
+.env-seal{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  width:40px;height:40px;border-radius:50%;
+  background:radial-gradient(circle, var(--gold3) 0%, var(--gold) 60%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Great Vibes',cursive;font-size:1.3rem;color:var(--green);
+  z-index:5;
+  box-shadow:0 0 0 2px var(--gold),0 0 15px rgba(184,134,42,0.6);
+  animation:sealPulse 2s infinite;
+}
+@keyframes sealPulse{
+  0%,100%{box-shadow:0 0 0 2px var(--gold),0 0 15px rgba(184,134,42,0.4);}
+  50%    {box-shadow:0 0 0 4px var(--gold3),0 0 30px rgba(228,193,112,0.7);}
+}
+/* top flap */
+.env-flap{
+  position:absolute;top:0;left:0;width:100%;
+  transform-origin:top center;
+  transition:transform 1s cubic-bezier(.4,0,.2,1);
+}
+.env-flap svg{width:100%;display:block;}
+.env-flap.open{transform:rotateX(-180deg);}
 
-    .page {
-      min-height: 100svh;
-      width: 100%;
-      max-width: 430px;
-      margin: 0 auto;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 50px 24px 50px;
-      overflow: hidden;
-    }
+/* letter peek */
+.env-letter{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:200px;height:0;
+  background:var(--cream);
+  border:1px solid rgba(184,134,42,0.3);
+  border-radius:4px;
+  transition:height 0.8s cubic-bezier(.4,0,.2,1) 0.6s, bottom 0.8s cubic-bezier(.4,0,.2,1) 0.6s;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  z-index:3;
+}
+.env-letter.out{height:160px;bottom:100px;}
+.env-letter-text{
+  font-family:'Great Vibes',cursive;
+  font-size:1.4rem;color:var(--green);
+  text-align:center;padding:8px;
+  opacity:0;transition:opacity 0.4s 1.2s;
+}
+.env-letter.out .env-letter-text{opacity:1;}
 
-    /* ─── SECTION SEPARATORS ─── */
-    .page-sep {
-      width: 100%;
-      max-width: 430px;
-      margin: 0 auto;
-      height: 6px;
-      background: linear-gradient(90deg, var(--offwhite), var(--green-deep), var(--gold-mid), var(--green-deep), var(--offwhite));
-    }
+.splash-hint{
+  margin-top:30px;
+  font-family:'Cinzel',serif;font-size:0.65rem;
+  letter-spacing:4px;color:var(--gold3);
+  text-transform:uppercase;
+  animation:blink 1.5s infinite;
+  cursor:pointer;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-    /* ─── DECORATIVE ELEMENTS ─── */
-    .botanical-top {
-      position: absolute; top: 0; left: 0;
-      width: 100%; pointer-events: none; z-index: 0;
-    }
-    .botanical-bottom {
-      position: absolute; bottom: 0; left: 0;
-      width: 100%; pointer-events: none; z-index: 0;
-    }
-    .botanical-left {
-      position: absolute; left: -15px; top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none; z-index: 0; opacity: 0.55;
-    }
-    .botanical-right {
-      position: absolute; right: -15px; top: 50%;
-      transform: translateY(-50%) scaleX(-1);
-      pointer-events: none; z-index: 0; opacity: 0.55;
-    }
+.splash-top-deco{
+  margin-bottom:24px;
+  font-family:'Great Vibes',cursive;
+  font-size:1.2rem;color:var(--gold3);
+  letter-spacing:2px;
+  direction:rtl;
+}
 
-    .content { position: relative; z-index: 1; text-align: center; width: 100%; }
+/* ═══════════════════════════
+   MAIN CONTENT
+═══════════════════════════ */
+#main{opacity:0;transition:opacity 0.8s ease;}
+#main.visible{opacity:1;}
 
-    /* ─── DIVIDERS ─── */
-    .divider {
-      display: flex; align-items: center; gap: 10px;
-      margin: 14px auto; width: 80%;
-    }
-    .divider-line {
-      flex: 1; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    .divider-diamond {
-      width: 7px; height: 7px;
-      background: var(--gold); transform: rotate(45deg); flex-shrink: 0;
-    }
+/* ─── SECTION BASE ─── */
+.section{
+  min-height:100svh;width:100%;max-width:430px;
+  margin:0 auto;padding:60px 24px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
 
-    /* ═══════════════════════════════
-       PAGE 1 — HERO
-    ═══════════════════════════════ */
-    #hero {
-      background: linear-gradient(170deg, var(--cream) 0%, var(--offwhite) 60%, var(--cream-dark) 100%);
-    }
+/* stripe separator */
+.stripe{
+  width:100%;max-width:430px;margin:0 auto;
+  height:5px;
+  background:linear-gradient(90deg,var(--cream),var(--green),var(--gold2),var(--green),var(--cream));
+}
 
-    /* Green header band */
-    .hero-header-band {
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 90px;
-      background: var(--green-deep);
-      z-index: 0;
-    }
-    /* Green footer band */
-    .hero-footer-band {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 70px;
-      background: var(--green-deep);
-      z-index: 0;
-    }
+/* ─── SCROLL REVEAL ─── */
+.reveal{
+  opacity:0;transform:translateY(30px);
+  transition:opacity 0.8s ease,transform 0.8s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
 
-    .bismillah-box {
-      background: var(--green-deep);
-      border-radius: 12px;
-      padding: 10px 28px;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-    .arabic-bismillah {
-      font-size: 1.5rem;
-      color: var(--gold-light);
-      direction: rtl;
-      font-family: serif;
-      text-shadow: 0 0 12px rgba(201,168,76,0.3);
-    }
+/* ─── DIVIDER ─── */
+.divider{display:flex;align-items:center;gap:10px;margin:14px auto;width:80%;}
+.div-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.div-dia{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);flex-shrink:0;}
 
-    .invite-label {
-      font-family: 'Cinzel', serif;
-      font-size: 0.6rem;
-      letter-spacing: 4px;
-      color: var(--text-mid);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
+/* ════════════════════════════
+   PAGE 1 — HERO
+════════════════════════════ */
+#hero{
+  background:linear-gradient(160deg,var(--cream) 0%,var(--offwhite) 60%,var(--parchment) 100%);
+}
+.green-band-top{
+  position:absolute;top:0;left:0;right:0;height:88px;
+  background:var(--green);z-index:0;
+}
+.green-band-bot{
+  position:absolute;bottom:0;left:0;right:0;height:72px;
+  background:var(--green);z-index:0;
+}
 
-    .couple-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3.2rem;
-      line-height: 1.1;
-      color: var(--green-deep);
-    }
-    .ampersand-gold {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.2rem;
-      color: var(--gold);
-      display: block;
-      margin: -4px 0;
-    }
+/* Bismillah pill */
+.bismillah-pill{
+  position:relative;z-index:2;
+  background:var(--green);
+  border-radius:10px;padding:10px 24px;
+  display:inline-block;margin-bottom:18px;
+  border:1px solid rgba(228,193,112,0.4);
+  animation:pillGlow 3s ease-in-out infinite;
+}
+@keyframes pillGlow{
+  0%,100%{box-shadow:0 0 0 rgba(228,193,112,0);}
+  50%    {box-shadow:0 0 20px rgba(228,193,112,0.3);}
+}
+.bismillah-pill .arabic{
+  font-size:1.5rem;color:var(--gold3);direction:rtl;font-family:serif;
+}
 
-    .date-badge {
-      margin: 20px auto;
-      border: 2px solid var(--green-deep);
-      border-radius: 50%;
-      width: 115px; height: 115px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      background: var(--green-deep);
-      box-shadow: 0 4px 20px rgba(26,58,42,0.2);
-      position: relative;
-    }
-    .date-badge::after {
-      content: '';
-      position: absolute;
-      inset: 5px;
-      border-radius: 50%;
-      border: 1px solid var(--gold-light);
-      opacity: 0.6;
-    }
-    .date-day   { font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 500; color: var(--gold-light); line-height: 1; }
-    .date-month { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 3px; color: var(--gold); margin: 2px 0; }
-    .date-year  { font-family: 'Cinzel', serif; font-size: 0.72rem; color: var(--gold); }
+/* label */
+.label-sm{
+  font-family:'Cinzel',serif;font-size:0.6rem;
+  letter-spacing:4px;color:var(--gold);text-transform:uppercase;
+  margin-bottom:14px;
+}
 
-    .hero-tagline {
-      font-style: italic; font-size: 0.9rem;
-      color: var(--text-mid); margin-top: 14px; letter-spacing: 0.5px;
-    }
+/* ─── ANIMATED SVG WREATH ─── */
+.wreath-svg{display:block;margin:0 auto;}
+/* leaf sway */
+@keyframes sway{
+  0%,100%{transform:rotate(0deg);}
+  50%    {transform:rotate(3deg);}
+}
+.sway-leaf{transform-origin:center;animation:sway 4s ease-in-out infinite;}
+.sway-leaf:nth-child(even){animation-direction:alternate-reverse;}
 
-    .scroll-hint {
-      position: absolute; bottom: 90px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      animation: bounce 2s infinite; z-index: 2;
-    }
-    .scroll-hint span { font-size: 0.55rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
-    .scroll-arrow {
-      width: 18px; height: 18px;
-      border-right: 1.5px solid var(--gold);
-      border-bottom: 1.5px solid var(--gold);
-      transform: rotate(45deg);
-    }
-    @keyframes bounce {
-      0%,100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(6px); }
-    }
+/* calligraphy name draw */
+.name-path{
+  stroke-dasharray:1000;
+  stroke-dashoffset:1000;
+  animation:drawName 2.5s ease forwards;
+  fill:transparent;
+}
+.name-path.delay1{animation-delay:0.3s;}
+.name-path.delay2{animation-delay:1.5s;}
+@keyframes drawName{to{stroke-dashoffset:0;}}
 
-    /* ═══════════════════════════════
-       PAGE 2 — BRIDE & GROOM
-    ═══════════════════════════════ */
-    #intro { background: var(--offwhite); }
+/* date badge */
+.date-badge{
+  margin:18px auto;
+  width:112px;height:112px;border-radius:50%;
+  background:var(--green);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;z-index:2;
+  animation:badgePop 0.6s cubic-bezier(.17,.67,.48,1.5) 0.5s both;
+}
+@keyframes badgePop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.date-badge::after{
+  content:'';position:absolute;inset:5px;border-radius:50%;
+  border:1px solid var(--gold3);opacity:0.6;
+  animation:spin 20s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.date-badge::before{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:1px dashed rgba(184,134,42,0.4);
+  animation:spin 30s linear infinite reverse;
+}
+.d-day{font-family:'Cinzel',serif;font-size:2rem;font-weight:600;color:var(--gold3);line-height:1;}
+.d-mon{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:3px;color:var(--gold);margin:2px 0;}
+.d-yr {font-family:'Cinzel',serif;font-size:0.7rem;color:var(--gold);}
 
-    .green-pill {
-      background: var(--green-deep);
-      color: var(--gold-light);
-      font-family: 'Cinzel', serif;
-      font-size: 0.6rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: 7px 22px;
-      border-radius: 50px;
-      display: inline-block;
-      margin-bottom: 22px;
-    }
+.tagline{font-style:italic;font-size:0.9rem;color:var(--green2);margin-top:12px;letter-spacing:0.5px;}
 
-    .role-label {
-      font-family: 'Cinzel', serif; font-size: 0.6rem;
-      letter-spacing: 3px; color: var(--gold);
-      text-transform: uppercase; margin-bottom: 4px;
-    }
-    .person-name {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.6rem; color: var(--green-deep);
-      line-height: 1.1;
-    }
-    .person-lineage {
-      font-size: 0.8rem; color: var(--text-mid);
-      font-style: italic; margin-top: 4px; letter-spacing: 0.5px;
-    }
+/* scroll arrow */
+.scroll-hint{
+  position:absolute;bottom:88px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  z-index:2;animation:bounce 2s infinite;
+}
+.scroll-hint span{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.s-arrow{width:16px;height:16px;border-right:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);transform:rotate(45deg);}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(7px);}}
 
-    .person-card {
-      background: var(--cream);
-      border: 1px solid var(--green-pale);
-      border-top: 3px solid var(--green-deep);
-      border-radius: 14px;
-      padding: 20px 24px;
-      margin: 10px 0;
-      position: relative;
-    }
-    .person-card::after {
-      content: '';
-      position: absolute; top: 10px; right: 14px;
-      width: 24px; height: 24px;
-      border-right: 1px solid var(--gold);
-      border-bottom: 1px solid var(--gold);
-      border-radius: 0 0 6px 0;
-    }
+/* ════════════════════════════
+   PAGE 2 — BRIDE & GROOM
+════════════════════════════ */
+#people{background:var(--offwhite);}
 
-    .quran-verse-box {
-      background: var(--green-deep);
-      border-radius: 14px;
-      padding: 18px 22px;
-      margin: 16px 0;
-      border: 1px solid rgba(201,168,76,0.3);
-    }
-    .quran-verse-box p {
-      font-style: italic; font-size: 0.88rem;
-      color: rgba(240,222,176,0.9); line-height: 1.8;
-    }
-    .quran-verse-box em {
-      color: var(--gold-light); font-size: 0.8rem;
-    }
+.green-pill{
+  background:var(--green);color:var(--gold3);
+  font-family:'Cinzel',serif;font-size:0.58rem;
+  letter-spacing:3px;text-transform:uppercase;
+  padding:7px 22px;border-radius:50px;
+  display:inline-block;margin-bottom:22px;
+  animation:pillFloat 3s ease-in-out infinite;
+}
+@keyframes pillFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
 
-    /* ═══════════════════════════════
-       PAGE 3 — EVENTS
-    ═══════════════════════════════ */
-    #events { background: var(--offwhite); }
+.person-card{
+  background:var(--cream);
+  border:1px solid rgba(42,92,68,0.15);
+  border-top:3px solid var(--green);
+  border-radius:14px;padding:20px 22px;
+  margin:10px 0;width:100%;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(26,58,42,0.07);
+  transition:transform 0.3s, box-shadow 0.3s;
+}
+.person-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(26,58,42,0.12);}
+.person-card::after{
+  content:'';position:absolute;top:12px;right:14px;
+  width:22px;height:22px;
+  border-right:1px solid var(--gold);border-bottom:1px solid var(--gold);
+  border-radius:0 0 6px 0;
+}
+/* shimmer sweep on card */
+.person-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.4) 50%,transparent 60%);
+  transform:translateX(-100%);
+  animation:cardShimmer 3.5s ease infinite;
+}
+@keyframes cardShimmer{
+  0%  {transform:translateX(-100%);}
+  40%,100%{transform:translateX(200%);}
+}
+.role-lbl{
+  font-family:'Cinzel',serif;font-size:0.58rem;
+  letter-spacing:3px;color:var(--gold);
+  text-transform:uppercase;margin-bottom:4px;
+}
+.pname{
+  font-family:'Great Vibes',cursive;font-size:2.6rem;
+  color:var(--green);line-height:1.1;
+}
+.plineage{font-size:0.8rem;color:var(--green2);font-style:italic;margin-top:3px;}
 
-    .section-title {
-      font-family: 'Cinzel', serif; font-size: 0.6rem;
-      letter-spacing: 4px; color: var(--gold);
-      text-transform: uppercase; margin-bottom: 4px;
-    }
-    .section-heading {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.6rem; color: var(--green-deep);
-      margin-bottom: 20px;
-    }
+/* animated ampersand */
+.amp-sep{
+  margin:6px 0;text-align:center;
+  font-family:'Great Vibes',cursive;font-size:2.2rem;color:var(--gold);
+  animation:ampPulse 2s ease-in-out infinite;
+}
+@keyframes ampPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
 
-    .event-card {
-      background: var(--cream);
-      border: 1px solid var(--green-pale);
-      border-radius: 16px;
-      padding: 22px 20px;
-      margin: 12px 0;
-      position: relative;
-      overflow: hidden;
-      text-align: left;
-    }
-    .event-card-stripe {
-      position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--green-deep), var(--gold), var(--green-deep));
-    }
+/* Quran box */
+.quran-box{
+  background:var(--green);border-radius:14px;
+  padding:18px 20px;margin-top:14px;width:100%;
+  border:1px solid rgba(228,193,112,0.25);
+  position:relative;overflow:hidden;
+}
+.quran-box::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(228,193,112,0.05) 0%,transparent 50%,rgba(228,193,112,0.05) 100%);
+  animation:greenShimmer 4s linear infinite;
+}
+@keyframes greenShimmer{0%{opacity:0;}50%{opacity:1;}100%{opacity:0;}}
+.quran-text{font-style:italic;font-size:0.88rem;color:rgba(240,222,176,0.88);line-height:1.9;}
+.quran-ref{color:var(--gold3);font-size:0.78rem;}
 
-    .event-icon-wrap {
-      width: 42px; height: 42px;
-      background: var(--green-deep);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-      border: 2px solid var(--gold-light);
-    }
-    .event-name {
-      font-family: 'Cinzel', serif; font-size: 0.6rem;
-      letter-spacing: 3px; color: var(--gold);
-      text-transform: uppercase; margin-bottom: 4px;
-    }
-    .event-title {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2rem; color: var(--green-deep);
-      margin-bottom: 10px; line-height: 1.1;
-    }
-    .event-detail {
-      display: flex; align-items: flex-start; gap: 10px; margin: 6px 0;
-    }
-    .event-detail-icon { color: var(--green-mid); font-size: 0.85rem; flex-shrink: 0; margin-top: 2px; }
-    .event-detail-text { font-size: 0.85rem; color: var(--text-mid); line-height: 1.4; }
-    .event-detail-text strong { color: var(--text-dark); font-weight: 600; }
+/* ════════════════════════════
+   PAGE 3 — EVENTS
+════════════════════════════ */
+#events{background:var(--cream);}
 
-    .map-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      margin-top: 12px;
-      padding: 10px 22px;
-      background: var(--green-deep);
-      color: var(--gold-light);
-      text-decoration: none;
-      border-radius: 50px;
-      font-family: 'Cinzel', serif; font-size: 0.62rem;
-      letter-spacing: 2px; font-weight: 500;
-      border: 1px solid var(--gold-light);
-      transition: all 0.3s ease;
-    }
-    .map-btn:hover {
-      background: var(--gold); color: var(--green-deep);
-      transform: translateY(-2px);
-    }
+.sec-title{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:4px;}
+.sec-head{font-family:'Great Vibes',cursive;font-size:2.6rem;color:var(--green);margin-bottom:20px;}
 
-    /* ═══════════════════════════════
-       PAGE 4 — COUNTDOWN
-    ═══════════════════════════════ */
-    #countdown {
-      background: var(--green-deep);
-    }
+.ev-card{
+  background:var(--offwhite);
+  border:1px solid rgba(42,92,68,0.12);
+  border-radius:16px;padding:22px 20px;
+  margin:12px 0;width:100%;
+  position:relative;overflow:hidden;
+  box-shadow:0 2px 16px rgba(26,58,42,0.06);
+  transition:transform 0.4s cubic-bezier(.17,.67,.48,1.1), box-shadow 0.4s;
+}
+.ev-card:hover{transform:scale(1.02);box-shadow:0 8px 30px rgba(26,58,42,0.13);}
+.ev-stripe{
+  position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--green),var(--gold),var(--green));
+  background-size:200% auto;
+  animation:stripeFlow 3s linear infinite;
+}
+@keyframes stripeFlow{0%{background-position:200% center;}100%{background-position:-200% center;}}
 
-    #countdown .section-title { color: var(--gold-light); }
-    #countdown .section-heading { color: var(--gold-light); }
+.ev-icon-wrap{
+  width:44px;height:44px;background:var(--green);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  margin-bottom:10px;
+  border:2px solid var(--gold3);
+  animation:iconSpin 8s linear infinite;
+  box-shadow:0 0 0 0 rgba(228,193,112,0.4);
+}
+@keyframes iconSpin{
+  0%,100%{box-shadow:0 0 0 0 rgba(228,193,112,0.4);}
+  50%    {box-shadow:0 0 0 8px rgba(228,193,112,0);}
+}
+.ev-name{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:4px;}
+.ev-title{font-family:'Great Vibes',cursive;font-size:2rem;color:var(--green);margin-bottom:10px;}
+.ev-row{display:flex;align-items:flex-start;gap:10px;margin:5px 0;}
+.ev-ico{color:var(--green3);font-size:0.85rem;flex-shrink:0;margin-top:2px;}
+.ev-txt{font-size:0.85rem;color:var(--green2);line-height:1.4;}
+.ev-txt strong{color:var(--green);font-weight:600;}
 
-    .countdown-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 10px; margin: 20px 0; width: 100%;
-    }
-    .countdown-box {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(201,168,76,0.3);
-      border-radius: 12px; padding: 14px 6px; text-align: center;
-    }
-    .countdown-num {
-      font-family: 'Cinzel', serif; font-size: 1.9rem; font-weight: 500;
-      color: var(--gold-light); display: block; line-height: 1;
-    }
-    .countdown-label {
-      font-size: 0.52rem; letter-spacing: 2px;
-      color: rgba(240,222,176,0.6); text-transform: uppercase;
-      margin-top: 4px; display: block;
-    }
+.map-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:12px;padding:10px 22px;
+  background:var(--green);color:var(--gold3);
+  text-decoration:none;border-radius:50px;
+  font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;
+  border:1px solid var(--gold3);
+  transition:all 0.3s;
+  position:relative;overflow:hidden;
+}
+.map-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(228,193,112,0.2) 50%,transparent 60%);
+  transform:translateX(-100%);transition:transform 0.4s;
+}
+.map-btn:hover::before{transform:translateX(100%);}
+.map-btn:hover{background:var(--gold);color:var(--green);transform:translateY(-2px);}
 
-    .rsvp-note {
-      font-style: italic; font-size: 0.88rem;
-      color: rgba(240,222,176,0.7); margin-top: 10px; line-height: 1.8;
-    }
+/* ════════════════════════════
+   PAGE 4 — COUNTDOWN (green bg)
+════════════════════════════ */
+#countdown{background:var(--green);}
 
-    .save-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      margin-top: 20px; padding: 11px 26px;
-      background: linear-gradient(135deg, var(--gold) 0%, #9a6c18 100%);
-      color: var(--green-deep);
-      text-decoration: none; border-radius: 50px;
-      font-family: 'Cinzel', serif; font-size: 0.62rem;
-      letter-spacing: 2px; font-weight: 700;
-      box-shadow: 0 4px 16px rgba(184,134,42,0.4);
-      transition: all 0.3s;
-    }
-    .save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(184,134,42,0.5); }
+#countdown .sec-title{color:var(--gold3);}
+#countdown .sec-head{
+  color:transparent;
+  background:linear-gradient(90deg,var(--gold) 0%,var(--gold3) 40%,#fff8e6 50%,var(--gold3) 60%,var(--gold) 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:goldShimmer 3s linear infinite;
+}
+@keyframes goldShimmer{0%{background-position:200% center;}100%{background-position:-200% center;}}
 
-    /* ═══════════════════════════════
-       PAGE 5 — CLOSING
-    ═══════════════════════════════ */
-    #footer-page { background: var(--offwhite); min-height: auto; padding: 50px 24px 60px; }
+/* FLIP CLOCK */
+.flip-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0;width:100%;}
 
-    .footer-couple { font-family: 'Great Vibes', cursive; font-size: 2.4rem; color: var(--green-deep); }
-    .footer-date-line { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 4px; color: var(--gold); margin-top: 8px; }
+.flip-box{
+  perspective:600px;
+}
+.flip-inner{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(228,193,112,0.25);
+  border-radius:12px;padding:14px 6px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.flip-inner::after{
+  content:'';position:absolute;top:50%;left:0;right:0;
+  height:1px;background:rgba(228,193,112,0.2);
+}
+.flip-num{
+  font-family:'Cinzel',serif;font-size:1.9rem;font-weight:500;
+  color:var(--gold3);display:block;line-height:1;
+  transition:all 0.3s ease;
+}
+.flip-lbl{
+  font-size:0.5rem;letter-spacing:2px;
+  color:rgba(240,222,176,0.55);text-transform:uppercase;
+  margin-top:4px;display:block;
+}
+.flip-num.flip-anim{
+  animation:flipDigit 0.4s ease;
+}
+@keyframes flipDigit{
+  0%  {transform:rotateX(0deg);opacity:1;}
+  50% {transform:rotateX(-90deg);opacity:0;}
+  51% {transform:rotateX(90deg);opacity:0;}
+  100%{transform:rotateX(0deg);opacity:1;}
+}
 
-    .summary-card {
-      background: var(--green-deep);
-      border-radius: 16px;
-      padding: 24px 20px;
-      margin: 20px 0;
-      border: 1px solid rgba(201,168,76,0.3);
-      text-align: left;
-    }
-    .summary-card .event-name { color: var(--gold-light); }
-    .summary-card .event-detail-icon { color: var(--gold-light); }
-    .summary-card .event-detail-text { color: rgba(240,222,176,0.8); }
-    .summary-card .event-detail-text strong { color: var(--gold-pale); }
+#countdown .rsvp-note{
+  font-style:italic;font-size:0.88rem;
+  color:rgba(240,222,176,0.7);margin-top:10px;line-height:1.9;
+}
 
-    .footer-quote {
-      font-style: italic; font-size: 0.9rem;
-      color: var(--text-mid); line-height: 1.9; margin: 18px 0;
-    }
-    .footer-quote em { color: var(--gold); font-style: normal; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 1px; }
+.save-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:20px;padding:12px 28px;
+  background:linear-gradient(135deg,var(--gold2),#9a6c18);
+  color:var(--green);text-decoration:none;border-radius:50px;
+  font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:2px;font-weight:700;
+  box-shadow:0 4px 18px rgba(184,134,42,0.45);
+  transition:all 0.3s;position:relative;overflow:hidden;
+}
+.save-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.3) 50%,transparent 60%);
+  transform:translateX(-100%);animation:saveSweep 2.5s ease infinite;
+}
+@keyframes saveSweep{
+  0%{transform:translateX(-100%);}
+  40%,100%{transform:translateX(200%);}
+}
+.save-btn:hover{transform:translateY(-3px);box-shadow:0 8px 26px rgba(184,134,42,0.6);}
 
-    .jzk {
-      font-family: 'Cinzel', serif; font-size: 0.65rem;
-      letter-spacing: 2px; color: var(--gold);
-      margin-top: 20px;
-    }
+/* ════════════════════════════
+   PAGE 5 — CLOSING
+════════════════════════════ */
+#closing{background:var(--offwhite);}
 
-    /* ─── FADE IN ─── */
-    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+.closing-couple{
+  font-family:'Great Vibes',cursive;font-size:2.6rem;
+  color:var(--green);margin-bottom:6px;
+  animation:nameFloat 4s ease-in-out infinite;
+}
+@keyframes nameFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
 
-    /* ─── SHIMMER on green bg ─── */
-    @keyframes shimmer {
-      0%   { background-position: -200% center; }
-      100% { background-position:  200% center; }
-    }
-    .shimmer-gold {
-      background: linear-gradient(90deg, var(--gold) 0%, #f0deb0 40%, #fff8e6 50%, #f0deb0 60%, var(--gold) 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      animation: shimmer 3s linear infinite;
-    }
+.closing-date{
+  font-family:'Cinzel',serif;font-size:0.6rem;
+  letter-spacing:4px;color:var(--gold);
+}
 
-    /* Gold rule */
-    .gold-rule {
-      width: 60%; height: 1px; margin: 0 auto;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-  </style>
+.verse-box{
+  background:var(--cream);
+  border:1px solid rgba(42,92,68,0.15);
+  border-left:4px solid var(--green);
+  border-radius:0 14px 14px 0;
+  padding:18px 20px;margin:18px 0;
+  width:100%;
+  font-style:italic;font-size:0.9rem;
+  color:var(--green2);line-height:1.9;
+}
+.verse-box span{
+  font-family:'Cinzel',serif;font-size:0.72rem;
+  color:var(--gold);font-style:normal;letter-spacing:1px;
+}
+
+/* Summary card */
+.sum-card{
+  background:var(--green);
+  border-radius:16px;padding:24px 20px;
+  margin:16px 0;width:100%;
+  border:1px solid rgba(228,193,112,0.25);
+  position:relative;overflow:hidden;
+}
+.sum-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 80% 20%,rgba(228,193,112,0.08) 0%,transparent 60%);
+  animation:sumGlow 5s ease-in-out infinite alternate;
+}
+@keyframes sumGlow{0%{opacity:0;}100%{opacity:1;}}
+.sum-card .ev-name{color:var(--gold3);}
+.sum-card .ev-ico{color:var(--gold3);}
+.sum-card .ev-txt{color:rgba(240,222,176,0.8);}
+.sum-card .ev-txt strong{color:var(--goldpal);}
+
+/* bottom floral mini */
+.closing-floral{display:block;margin:16px auto 0;}
+
+.jzk{
+  font-family:'Cinzel',serif;font-size:0.65rem;
+  letter-spacing:2px;color:var(--gold);margin-top:16px;
+}
+
+/* ═════════════════════
+   BOTANICAL SVGs
+═════════════════════ */
+.bot-top{position:absolute;top:0;left:0;width:100%;pointer-events:none;z-index:0;}
+.bot-bot{position:absolute;bottom:0;left:0;width:100%;pointer-events:none;z-index:0;}
+.bot-l{position:absolute;left:-12px;top:50%;transform:translateY(-50%);pointer-events:none;z-index:0;opacity:0.5;}
+.bot-r{position:absolute;right:-12px;top:50%;transform:translateY(-50%) scaleX(-1);pointer-events:none;z-index:0;opacity:0.5;}
+.cnt{position:relative;z-index:1;text-align:center;width:100%;}
+</style>
 </head>
 <body>
-<div class="pages">
 
-<!-- ══════════════════════════════════
-     PAGE 1  ·  HERO
-══════════════════════════════════ -->
-<section class="page" id="hero">
+<!-- ═══════ PARTICLE CANVAS ═══════ -->
+<canvas id="particleCanvas"></canvas>
 
-  <!-- Green top band with botanical -->
-  <div class="hero-header-band"></div>
+<!-- ══════════════════════════════════════
+     SPLASH — ENVELOPE OPENING
+══════════════════════════════════════ -->
+<div id="splash">
+  <div class="splash-top-deco">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
 
-  <!-- TOP GREEN BOTANICAL on the band -->
-  <svg class="botanical-top" viewBox="0 0 430 90" xmlns="http://www.w3.org/2000/svg" style="top:0;height:90px;">
-    <g opacity="0.5">
-      <ellipse cx="40"  cy="18" rx="34" ry="13" fill="#2a5c44" transform="rotate(-18,40,18)"/>
-      <ellipse cx="10"  cy="38" rx="26" ry="11" fill="#336b52" transform="rotate(-38,10,38)"/>
-      <ellipse cx="78"  cy="28" rx="28" ry="12" fill="#2d6b4a" transform="rotate(8,78,28)"/>
-      <ellipse cx="118" cy="20" rx="22" ry="9"  fill="#2a5c44" transform="rotate(-5,118,20)"/>
-      <circle cx="112" cy="8"  r="5" fill="#f5e8d8" opacity="0.9"/><circle cx="112" cy="8" r="2" fill="#d9a899"/>
-      <circle cx="72"  cy="10" r="4" fill="#f5e8d8" opacity="0.8"/><circle cx="72" cy="10" r="1.5" fill="#d9a899"/>
+  <div class="env-wrap" id="envWrap">
+    <!-- top flap -->
+    <div class="env-flap" id="envFlap">
+      <svg viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="0,0 260,0 130,100" fill="#1f4433"/>
+        <polygon points="0,0 260,0 130,90" fill="#2a5c44" opacity="0.6"/>
+        <!-- gold edge -->
+        <line x1="0" y1="0" x2="130" y2="100" stroke="#b8862a" stroke-width="1" opacity="0.7"/>
+        <line x1="260" y1="0" x2="130" y2="100" stroke="#b8862a" stroke-width="1" opacity="0.7"/>
+        <!-- leaves on flap -->
+        <ellipse cx="60" cy="30" rx="22" ry="9" fill="#1a3a2a" opacity="0.6" transform="rotate(-20,60,30)"/>
+        <ellipse cx="200" cy="30" rx="22" ry="9" fill="#1a3a2a" opacity="0.6" transform="rotate(20,200,30)"/>
+        <circle cx="130" cy="20" r="5" fill="#f5e8d0" opacity="0.7"/>
+        <circle cx="130" cy="20" r="2" fill="#c8926a"/>
+        <circle cx="58"  cy="18" r="3" fill="#f5e8d0" opacity="0.6"/>
+        <circle cx="202" cy="18" r="3" fill="#f5e8d0" opacity="0.6"/>
+      </svg>
+    </div>
+    <!-- envelope body -->
+    <div class="env-body">
+      <div class="env-seal">A</div>
+    </div>
+    <!-- letter peeking out -->
+    <div class="env-letter" id="envLetter">
+      <div class="env-letter-text">
+        You're Invited<br/>
+        <span style="font-size:0.9rem;color:var(--gold);">Atiba & Rashid</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="splash-hint" id="splashHint" onclick="openEnvelope()">✦ Tap to Open ✦</p>
+</div>
+
+<!-- ══════════════════════════════════════
+     MAIN INVITATION
+══════════════════════════════════════ -->
+<div id="main">
+
+<!-- ════ SECTION 1 — HERO ════ -->
+<section class="section" id="hero">
+  <div class="green-band-top"></div>
+  <div class="green-band-bot"></div>
+
+  <!-- Top green botanical -->
+  <svg class="bot-top" viewBox="0 0 430 90" xmlns="http://www.w3.org/2000/svg" style="height:90px;">
+    <g opacity="0.55">
+      <ellipse cx="38"  cy="20" rx="34" ry="13" fill="#2a5c44" transform="rotate(-18,38,20)" class="sway-leaf"/>
+      <ellipse cx="10"  cy="40" rx="26" ry="11" fill="#336b52" transform="rotate(-38,10,40)" class="sway-leaf"/>
+      <ellipse cx="78"  cy="28" rx="28" ry="12" fill="#2d6b4a" transform="rotate(8,78,28)"  class="sway-leaf"/>
+      <ellipse cx="118" cy="18" rx="22" ry="9"  fill="#2a5c44" transform="rotate(-6,118,18)"/>
+      <circle cx="112" cy="6" r="5" fill="#f5e8d8" opacity="0.9"/><circle cx="112" cy="6" r="2" fill="#d9a899"/>
+      <circle cx="72"  cy="8" r="4" fill="#f5e8d8" opacity="0.8"/><circle cx="72"  cy="8" r="1.5" fill="#d9a899"/>
     </g>
-    <g opacity="0.5" transform="scale(-1,1) translate(-430,0)">
-      <ellipse cx="40"  cy="18" rx="34" ry="13" fill="#2a5c44" transform="rotate(-18,40,18)"/>
-      <ellipse cx="10"  cy="38" rx="26" ry="11" fill="#336b52" transform="rotate(-38,10,38)"/>
-      <ellipse cx="78"  cy="28" rx="28" ry="12" fill="#2d6b4a" transform="rotate(8,78,28)"/>
-      <ellipse cx="118" cy="20" rx="22" ry="9"  fill="#2a5c44" transform="rotate(-5,118,20)"/>
-      <circle cx="112" cy="8"  r="5" fill="#f5e8d8" opacity="0.9"/><circle cx="112" cy="8" r="2" fill="#d9a899"/>
-      <circle cx="72"  cy="10" r="4" fill="#f5e8d8" opacity="0.8"/><circle cx="72" cy="10" r="1.5" fill="#d9a899"/>
+    <g opacity="0.55" transform="scale(-1,1) translate(-430,0)">
+      <ellipse cx="38"  cy="20" rx="34" ry="13" fill="#2a5c44" transform="rotate(-18,38,20)" class="sway-leaf"/>
+      <ellipse cx="10"  cy="40" rx="26" ry="11" fill="#336b52" transform="rotate(-38,10,40)" class="sway-leaf"/>
+      <ellipse cx="78"  cy="28" rx="28" ry="12" fill="#2d6b4a" transform="rotate(8,78,28)"  class="sway-leaf"/>
+      <ellipse cx="118" cy="18" rx="22" ry="9"  fill="#2a5c44" transform="rotate(-6,118,18)"/>
+      <circle cx="112" cy="6" r="5" fill="#f5e8d8" opacity="0.9"/><circle cx="112" cy="6" r="2" fill="#d9a899"/>
+      <circle cx="72"  cy="8" r="4" fill="#f5e8d8" opacity="0.8"/><circle cx="72"  cy="8" r="1.5" fill="#d9a899"/>
     </g>
   </svg>
 
-  <div class="content fade-in visible" style="margin-top:20px;">
-
-    <div class="bismillah-box">
-      <div class="arabic-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+  <div class="cnt">
+    <div class="bismillah-pill reveal">
+      <div class="arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
     </div>
 
-    <div class="divider">
-      <div class="divider-line"></div>
-      <div class="divider-diamond"></div>
-      <div class="divider-line"></div>
-    </div>
+    <div class="divider reveal"><div class="div-line"></div><div class="div-dia"></div><div class="div-line"></div></div>
+    <div class="label-sm reveal">Together With Their Families</div>
 
-    <div class="invite-label">Together With Their Families</div>
+    <!-- Animated Wreath SVG -->
+    <svg class="wreath-svg reveal" viewBox="0 0 300 220" width="288" height="210" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer pulsing ring -->
+      <circle cx="150" cy="110" r="98" fill="none" stroke="#b8862a" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.4">
+        <animateTransform attributeName="transform" type="rotate" from="0 150 110" to="360 150 110" dur="30s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="150" cy="110" r="90" fill="none" stroke="#b8862a" stroke-width="0.4" stroke-dasharray="2 6" opacity="0.3">
+        <animateTransform attributeName="transform" type="rotate" from="360 150 110" to="0 150 110" dur="20s" repeatCount="indefinite"/>
+      </circle>
 
-    <!-- Floral wreath with names -->
-    <svg viewBox="0 0 300 220" width="290" height="210" style="display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
-      <!-- Outer gold ring -->
-      <circle cx="150" cy="110" r="98" fill="none" stroke="#b8862a" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.5"/>
-      <!-- Wreath leaves -->
-      <g opacity="0.85">
-        <ellipse cx="150" cy="16"  rx="17" ry="7" fill="#1f4433"/>
+      <!-- Leaves with sway -->
+      <g opacity="0.9">
+        <ellipse cx="150" cy="16"  rx="17" ry="7" fill="#1f4433"><animateTransform attributeName="transform" type="rotate" values="0 150 16;2 150 16;0 150 16" dur="4s" repeatCount="indefinite"/></ellipse>
         <ellipse cx="130" cy="20"  rx="15" ry="6" fill="#2a5c44" transform="rotate(-18,130,20)"/>
         <ellipse cx="170" cy="20"  rx="15" ry="6" fill="#2a5c44" transform="rotate(18,170,20)"/>
         <ellipse cx="113" cy="31"  rx="13" ry="6" fill="#1f4433" transform="rotate(-38,113,31)"/>
@@ -515,347 +675,462 @@
         <ellipse cx="170" cy="192" rx="15" ry="6" fill="#2a5c44" transform="rotate(18,170,192)"/>
         <ellipse cx="150" cy="198" rx="17" ry="7" fill="#1f4433"/>
       </g>
-      <!-- Gold flowers on wreath -->
+      <!-- Flowers with pulse -->
       <g>
-        <circle cx="150" cy="10"  r="5" fill="#f5e8d0" opacity="0.95"/><circle cx="150" cy="10"  r="2"   fill="#c8926a"/>
-        <circle cx="98"  cy="40"  r="5" fill="#f5e8d0" opacity="0.9" /><circle cx="98"  cy="40"  r="2"   fill="#c8926a"/>
-        <circle cx="202" cy="40"  r="5" fill="#f5e8d0" opacity="0.9" /><circle cx="202" cy="40"  r="2"   fill="#c8926a"/>
-        <circle cx="80"  cy="102" r="4" fill="#f5e8d0" opacity="0.9" /><circle cx="80"  cy="102" r="1.5" fill="#c8926a"/>
-        <circle cx="220" cy="102" r="4" fill="#f5e8d0" opacity="0.9" /><circle cx="220" cy="102" r="1.5" fill="#c8926a"/>
-        <circle cx="98"  cy="166" r="5" fill="#f5e8d0" opacity="0.9" /><circle cx="98"  cy="166" r="2"   fill="#c8926a"/>
-        <circle cx="202" cy="166" r="5" fill="#f5e8d0" opacity="0.9" /><circle cx="202" cy="166" r="2"   fill="#c8926a"/>
-        <circle cx="150" cy="204" r="5" fill="#f5e8d0" opacity="0.95"/><circle cx="150" cy="204" r="2"   fill="#c8926a"/>
+        <circle cx="150" cy="10"  r="5" fill="#f5e8d0" opacity="0.95"><animate attributeName="r" values="5;6;5" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="150" cy="10"  r="2" fill="#c8926a"/>
+        <circle cx="98"  cy="40"  r="5" fill="#f5e8d0" opacity="0.9" ><animate attributeName="r" values="4;5.5;4" dur="3.5s" repeatCount="indefinite"/></circle>
+        <circle cx="98"  cy="40"  r="2" fill="#c8926a"/>
+        <circle cx="202" cy="40"  r="5" fill="#f5e8d0" opacity="0.9" ><animate attributeName="r" values="4;5.5;4" dur="3.5s" repeatCount="indefinite"/></circle>
+        <circle cx="202" cy="40"  r="2" fill="#c8926a"/>
+        <circle cx="80"  cy="102" r="4" fill="#f5e8d0" opacity="0.9" ><animate attributeName="r" values="3.5;5;3.5" dur="4s" repeatCount="indefinite"/></circle>
+        <circle cx="80"  cy="102" r="1.5" fill="#c8926a"/>
+        <circle cx="220" cy="102" r="4" fill="#f5e8d0" opacity="0.9" ><animate attributeName="r" values="3.5;5;3.5" dur="4s" repeatCount="indefinite"/></circle>
+        <circle cx="220" cy="102" r="1.5" fill="#c8926a"/>
+        <circle cx="98"  cy="166" r="5" fill="#f5e8d0" opacity="0.9" ><animate attributeName="r" values="4;5.5;4" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="98"  cy="166" r="2" fill="#c8926a"/>
+        <circle cx="202" cy="166" r="5" fill="#f5e8d0" opacity="0.9" ><animate attributeName="r" values="4;5.5;4" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="202" cy="166" r="2" fill="#c8926a"/>
+        <circle cx="150" cy="204" r="5" fill="#f5e8d0" opacity="0.95"><animate attributeName="r" values="5;6;5" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="150" cy="204" r="2" fill="#c8926a"/>
       </g>
-      <!-- Names -->
-      <text x="150" y="82"  text-anchor="middle" font-family="'Great Vibes',cursive" font-size="40" fill="#1a3a2a">Atiba</text>
-      <text x="150" y="118" text-anchor="middle" font-family="'Great Vibes',cursive" font-size="28" fill="#b8862a">&amp;</text>
-      <text x="150" y="155" text-anchor="middle" font-family="'Great Vibes',cursive" font-size="40" fill="#1a3a2a">Rashid</text>
+      <!-- Names with appear animation -->
+      <text x="150" y="82"  text-anchor="middle" font-family="'Great Vibes',cursive" font-size="40" fill="#1a3a2a" opacity="0">
+        Atiba
+        <animate attributeName="opacity" from="0" to="1" begin="0.5s" dur="1s" fill="freeze"/>
+      </text>
+      <text x="150" y="118" text-anchor="middle" font-family="'Great Vibes',cursive" font-size="28" fill="#b8862a" opacity="0">
+        &amp;
+        <animate attributeName="opacity" from="0" to="1" begin="1.2s" dur="0.8s" fill="freeze"/>
+      </text>
+      <text x="150" y="155" text-anchor="middle" font-family="'Great Vibes',cursive" font-size="40" fill="#1a3a2a" opacity="0">
+        Rashid
+        <animate attributeName="opacity" from="0" to="1" begin="1.8s" dur="1s" fill="freeze"/>
+      </text>
     </svg>
 
-    <div class="date-badge">
-      <span class="date-day">10</span>
-      <span class="date-month">January</span>
-      <span class="date-year">2027</span>
+    <div class="date-badge reveal">
+      <span class="d-day">10</span>
+      <span class="d-mon">January</span>
+      <span class="d-yr">2027</span>
     </div>
 
-    <p class="hero-tagline">— Invite you to celebrate their union —</p>
+    <p class="tagline reveal">— Invite you to celebrate their union —</p>
   </div>
 
-  <div class="scroll-hint" style="bottom:82px;">
+  <div class="scroll-hint">
     <span>scroll</span>
-    <div class="scroll-arrow"></div>
+    <div class="s-arrow"></div>
   </div>
 
-  <!-- Green bottom band botanical -->
-  <div class="hero-footer-band"></div>
-  <svg class="botanical-bottom" viewBox="0 0 430 70" xmlns="http://www.w3.org/2000/svg" style="bottom:0;height:70px;">
-    <g opacity="0.5">
-      <ellipse cx="160" cy="52" rx="30" ry="12" fill="#2a5c44" transform="rotate(-10,160,52)"/>
-      <ellipse cx="215" cy="58" rx="38" ry="15" fill="#1f4433"/>
-      <ellipse cx="270" cy="52" rx="30" ry="12" fill="#2a5c44" transform="rotate(10,270,52)"/>
-      <ellipse cx="130" cy="62" rx="22" ry="9"  fill="#336b52" transform="rotate(-20,130,62)"/>
-      <ellipse cx="300" cy="62" rx="22" ry="9"  fill="#336b52" transform="rotate(20,300,62)"/>
-      <circle cx="215" cy="44" r="6" fill="#f5e8d0" opacity="0.9"/><circle cx="215" cy="44" r="2.5" fill="#d9a899"/>
-      <circle cx="165" cy="40" r="4" fill="#f5e8d0" opacity="0.8"/><circle cx="165" cy="40" r="1.5" fill="#d9a899"/>
-      <circle cx="265" cy="40" r="4" fill="#f5e8d0" opacity="0.8"/><circle cx="265" cy="40" r="1.5" fill="#d9a899"/>
+  <!-- Bottom green botanical -->
+  <svg class="bot-bot" viewBox="0 0 430 72" xmlns="http://www.w3.org/2000/svg" style="height:72px;">
+    <g opacity="0.55">
+      <ellipse cx="162" cy="54" rx="30" ry="12" fill="#2a5c44" transform="rotate(-10,162,54)" class="sway-leaf"/>
+      <ellipse cx="215" cy="60" rx="38" ry="15" fill="#1f4433"/>
+      <ellipse cx="268" cy="54" rx="30" ry="12" fill="#2a5c44" transform="rotate(10,268,54)" class="sway-leaf"/>
+      <ellipse cx="130" cy="64" rx="22" ry="9"  fill="#336b52" transform="rotate(-20,130,64)"/>
+      <ellipse cx="300" cy="64" rx="22" ry="9"  fill="#336b52" transform="rotate(20,300,64)"/>
+      <circle cx="215" cy="44" r="6" fill="#f5e8d0" opacity="0.9"><animate attributeName="r" values="5;7;5" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="215" cy="44" r="2.5" fill="#d9a899"/>
+      <circle cx="166" cy="40" r="4" fill="#f5e8d0" opacity="0.8"/><circle cx="166" cy="40" r="1.5" fill="#d9a899"/>
+      <circle cx="264" cy="40" r="4" fill="#f5e8d0" opacity="0.8"/><circle cx="264" cy="40" r="1.5" fill="#d9a899"/>
     </g>
   </svg>
 </section>
 
-<div class="page-sep"></div>
+<div class="stripe"></div>
 
-<!-- ══════════════════════════════════
-     PAGE 2  ·  BRIDE & GROOM
-══════════════════════════════════ -->
-<section class="page" id="intro">
-
-  <svg class="botanical-left" viewBox="0 0 55 260" width="55" xmlns="http://www.w3.org/2000/svg">
-    <path d="M45,0 Q15,65 35,130 Q5,195 25,260" fill="none" stroke="#2a5c44" stroke-width="1.5"/>
-    <ellipse cx="22" cy="45"  rx="20" ry="8" fill="#2a5c44" transform="rotate(-55,22,45)"/>
-    <ellipse cx="12" cy="90"  rx="22" ry="9" fill="#1f4433" transform="rotate(-72,12,90)"/>
-    <ellipse cx="28" cy="130" rx="20" ry="8" fill="#2a5c44" transform="rotate(-45,28,130)"/>
-    <ellipse cx="10" cy="170" rx="20" ry="8" fill="#1f4433" transform="rotate(-68,10,170)"/>
-    <ellipse cx="26" cy="210" rx="18" ry="7" fill="#2a5c44" transform="rotate(-50,26,210)"/>
-    <circle cx="30" cy="34"  r="4" fill="#f5e8d0" opacity="0.85"/><circle cx="30" cy="34"  r="1.5" fill="#d9a899"/>
-    <circle cx="12" cy="118" r="4" fill="#f5e8d0" opacity="0.85"/><circle cx="12" cy="118" r="1.5" fill="#d9a899"/>
-    <circle cx="26" cy="198" r="4" fill="#f5e8d0" opacity="0.85"/><circle cx="26" cy="198" r="1.5" fill="#d9a899"/>
+<!-- ════ SECTION 2 — BRIDE & GROOM ════ -->
+<section class="section" id="people">
+  <!-- side botanicals -->
+  <svg class="bot-l" viewBox="0 0 55 280" width="52" xmlns="http://www.w3.org/2000/svg">
+    <path d="M44,0 Q14,70 34,140 Q4,210 24,280" fill="none" stroke="#2a5c44" stroke-width="1.5" stroke-dasharray="2000" stroke-dashoffset="2000"><animate attributeName="stroke-dashoffset" from="2000" to="0" dur="2s" fill="freeze"/></path>
+    <ellipse cx="22" cy="48"  rx="20" ry="8" fill="#2a5c44" transform="rotate(-55,22,48)"  opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.4s" dur="0.5s" fill="freeze"/></ellipse>
+    <ellipse cx="12" cy="92"  rx="22" ry="9" fill="#1f4433" transform="rotate(-72,12,92)"  opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.7s" dur="0.5s" fill="freeze"/></ellipse>
+    <ellipse cx="28" cy="140" rx="20" ry="8" fill="#2a5c44" transform="rotate(-45,28,140)" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1.0s" dur="0.5s" fill="freeze"/></ellipse>
+    <ellipse cx="10" cy="188" rx="20" ry="8" fill="#1f4433" transform="rotate(-68,10,188)" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1.3s" dur="0.5s" fill="freeze"/></ellipse>
+    <ellipse cx="26" cy="236" rx="18" ry="7" fill="#2a5c44" transform="rotate(-50,26,236)" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1.6s" dur="0.5s" fill="freeze"/></ellipse>
+    <circle cx="30" cy="36"  r="4" fill="#f5e8d0" opacity="0.85"><animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite"/></circle><circle cx="30" cy="36"  r="1.5" fill="#d9a899"/>
+    <circle cx="12" cy="128" r="4" fill="#f5e8d0" opacity="0.85"><animate attributeName="r" values="3;5;3" dur="3.5s" repeatCount="indefinite"/></circle><circle cx="12" cy="128" r="1.5" fill="#d9a899"/>
+    <circle cx="26" cy="224" r="4" fill="#f5e8d0" opacity="0.85"><animate attributeName="r" values="3;5;3" dur="2.8s" repeatCount="indefinite"/></circle><circle cx="26" cy="224" r="1.5" fill="#d9a899"/>
   </svg>
-  <svg class="botanical-right" viewBox="0 0 55 260" width="55" xmlns="http://www.w3.org/2000/svg">
-    <path d="M45,0 Q15,65 35,130 Q5,195 25,260" fill="none" stroke="#2a5c44" stroke-width="1.5"/>
-    <ellipse cx="22" cy="45"  rx="20" ry="8" fill="#2a5c44" transform="rotate(-55,22,45)"/>
-    <ellipse cx="12" cy="90"  rx="22" ry="9" fill="#1f4433" transform="rotate(-72,12,90)"/>
-    <ellipse cx="28" cy="130" rx="20" ry="8" fill="#2a5c44" transform="rotate(-45,28,130)"/>
-    <ellipse cx="10" cy="170" rx="20" ry="8" fill="#1f4433" transform="rotate(-68,10,170)"/>
-    <ellipse cx="26" cy="210" rx="18" ry="7" fill="#2a5c44" transform="rotate(-50,26,210)"/>
-    <circle cx="30" cy="34"  r="4" fill="#f5e8d0" opacity="0.85"/><circle cx="30" cy="34"  r="1.5" fill="#d9a899"/>
-    <circle cx="12" cy="118" r="4" fill="#f5e8d0" opacity="0.85"/><circle cx="12" cy="118" r="1.5" fill="#d9a899"/>
-    <circle cx="26" cy="198" r="4" fill="#f5e8d0" opacity="0.85"/><circle cx="26" cy="198" r="1.5" fill="#d9a899"/>
+  <svg class="bot-r" viewBox="0 0 55 280" width="52" xmlns="http://www.w3.org/2000/svg">
+    <path d="M44,0 Q14,70 34,140 Q4,210 24,280" fill="none" stroke="#2a5c44" stroke-width="1.5" stroke-dasharray="2000" stroke-dashoffset="2000"><animate attributeName="stroke-dashoffset" from="2000" to="0" dur="2s" fill="freeze"/></path>
+    <ellipse cx="22" cy="48"  rx="20" ry="8" fill="#2a5c44" transform="rotate(-55,22,48)"  opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.4s" dur="0.5s" fill="freeze"/></ellipse>
+    <ellipse cx="12" cy="92"  rx="22" ry="9" fill="#1f4433" transform="rotate(-72,12,92)"  opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.7s" dur="0.5s" fill="freeze"/></ellipse>
+    <ellipse cx="28" cy="140" rx="20" ry="8" fill="#2a5c44" transform="rotate(-45,28,140)" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1.0s" dur="0.5s" fill="freeze"/></ellipse>
+    <ellipse cx="10" cy="188" rx="20" ry="8" fill="#1f4433" transform="rotate(-68,10,188)" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1.3s" dur="0.5s" fill="freeze"/></ellelse>
+    <ellipse cx="26" cy="236" rx="18" ry="7" fill="#2a5c44" transform="rotate(-50,26,236)" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1.6s" dur="0.5s" fill="freeze"/></ellipse>
+    <circle cx="30" cy="36"  r="4" fill="#f5e8d0" opacity="0.85"><animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite"/></circle><circle cx="30" cy="36"  r="1.5" fill="#d9a899"/>
+    <circle cx="12" cy="128" r="4" fill="#f5e8d0" opacity="0.85"><animate attributeName="r" values="3;5;3" dur="3.5s" repeatCount="indefinite"/></circle><circle cx="12" cy="128" r="1.5" fill="#d9a899"/>
+    <circle cx="26" cy="224" r="4" fill="#f5e8d0" opacity="0.85"><animate attributeName="r" values="3;5;3" dur="2.8s" repeatCount="indefinite"/></circle><circle cx="26" cy="224" r="1.5" fill="#d9a899"/>
   </svg>
 
-  <div class="content">
-    <div class="green-pill fade-in">With the Blessings of Allah</div>
+  <div class="cnt">
+    <div class="green-pill reveal">With the Blessings of Allah</div>
 
-    <div class="person-card fade-in">
-      <div class="role-label">The Bride</div>
-      <div class="person-name">Atiba Quazi</div>
-      <div class="person-lineage">D/o Late Naimoddin Quazi</div>
+    <div class="person-card reveal-left">
+      <div class="role-lbl">The Bride</div>
+      <div class="pname">Atiba Quazi</div>
+      <div class="plineage">D/o Late Naimoddin Quazi</div>
     </div>
 
-    <!-- Ornamental connector -->
-    <svg viewBox="0 0 200 56" width="180" style="display:block;margin:4px auto;" xmlns="http://www.w3.org/2000/svg">
-      <line x1="0" y1="28" x2="68" y2="28" stroke="#b8862a" stroke-width="0.8" opacity="0.5"/>
-      <line x1="132" y1="28" x2="200" y2="28" stroke="#b8862a" stroke-width="0.8" opacity="0.5"/>
-      <!-- leaves -->
-      <ellipse cx="38" cy="22" rx="14" ry="6" fill="#2a5c44" transform="rotate(-15,38,22)" opacity="0.7"/>
-      <ellipse cx="162" cy="22" rx="14" ry="6" fill="#2a5c44" transform="rotate(15,162,22)" opacity="0.7"/>
-      <circle cx="36" cy="13" r="4" fill="#f5e8d0" opacity="0.85"/><circle cx="36" cy="13" r="1.5" fill="#d9a899"/>
-      <circle cx="164" cy="13" r="4" fill="#f5e8d0" opacity="0.85"/><circle cx="164" cy="13" r="1.5" fill="#d9a899"/>
-      <!-- center gold ornament -->
-      <circle cx="100" cy="28" r="8" fill="none" stroke="#b8862a" stroke-width="1" opacity="0.8"/>
-      <circle cx="100" cy="28" r="3" fill="#b8862a" opacity="0.9"/>
-      <text x="100" y="52" text-anchor="middle" font-family="'Great Vibes',cursive" font-size="16" fill="#b8862a">&amp;</text>
-    </svg>
+    <div class="amp-sep reveal">&amp;</div>
 
-    <div class="person-card fade-in">
-      <div class="role-label">The Groom</div>
-      <div class="person-name">Rashid Khan</div>
-      <div class="person-lineage">S/o Shareequllah Khan</div>
+    <div class="person-card reveal-right">
+      <div class="role-lbl">The Groom</div>
+      <div class="pname">Rashid Khan</div>
+      <div class="plineage">S/o Shareequllah Khan</div>
     </div>
 
-    <div class="quran-verse-box fade-in">
-      <p>
+    <div class="quran-box reveal">
+      <p class="quran-text">
         "And We created you in pairs"<br/>
-        <em>— Surah An-Naba, 78:8</em>
+        <span class="quran-ref">— Surah An-Naba, 78:8</span>
       </p>
     </div>
   </div>
 </section>
 
-<div class="page-sep"></div>
+<div class="stripe"></div>
 
-<!-- ══════════════════════════════════
-     PAGE 3  ·  EVENTS
-══════════════════════════════════ -->
-<section class="page" id="events" style="justify-content:flex-start; padding-top:50px;">
+<!-- ════ SECTION 3 — EVENTS ════ -->
+<section class="section" id="events" style="justify-content:flex-start;padding-top:55px;">
 
-  <svg class="botanical-top" viewBox="0 0 430 60" xmlns="http://www.w3.org/2000/svg" style="height:60px;">
-    <g opacity="0.35">
+  <svg class="bot-top" viewBox="0 0 430 56" xmlns="http://www.w3.org/2000/svg" style="height:56px;">
+    <g opacity="0.3">
       <ellipse cx="30"  cy="10" rx="28" ry="10" fill="#1f4433" transform="rotate(-10,30,10)"/>
-      <ellipse cx="80"  cy="16" rx="30" ry="11" fill="#2a5c44" transform="rotate(5,80,16)"/>
-      <ellipse cx="136" cy="10" rx="24" ry="9"  fill="#1f4433" transform="rotate(-6,136,10)"/>
+      <ellipse cx="80"  cy="16" rx="30" ry="11" fill="#2a5c44"/>
+      <ellipse cx="136" cy="10" rx="24" ry="9"  fill="#1f4433"/>
       <circle cx="80" cy="4" r="5" fill="#f5e8d0" opacity="0.8"/><circle cx="80" cy="4" r="2" fill="#d9a899"/>
-      <!-- mirror -->
       <ellipse cx="400" cy="10" rx="28" ry="10" fill="#1f4433" transform="rotate(10,400,10)"/>
-      <ellipse cx="350" cy="16" rx="30" ry="11" fill="#2a5c44" transform="rotate(-5,350,16)"/>
-      <ellipse cx="294" cy="10" rx="24" ry="9"  fill="#1f4433" transform="rotate(6,294,10)"/>
+      <ellipse cx="350" cy="16" rx="30" ry="11" fill="#2a5c44"/>
+      <ellipse cx="294" cy="10" rx="24" ry="9"  fill="#1f4433"/>
       <circle cx="350" cy="4" r="5" fill="#f5e8d0" opacity="0.8"/><circle cx="350" cy="4" r="2" fill="#d9a899"/>
     </g>
   </svg>
 
-  <div class="content">
-    <div class="section-title fade-in">You Are Warmly Invited</div>
-    <div class="section-heading fade-in">Our Celebrations</div>
+  <div class="cnt">
+    <div class="sec-title reveal">You Are Warmly Invited</div>
+    <div class="sec-head reveal">Our Celebrations</div>
 
-    <!-- NIKAH CARD -->
-    <div class="event-card fade-in">
-      <div class="event-card-stripe"></div>
-      <div class="event-icon-wrap">🕌</div>
-      <div class="event-name">Aqd e Nikah</div>
-      <div class="event-title">Nikah Ceremony</div>
-      <div class="event-detail">
-        <span class="event-detail-icon">📅</span>
-        <span class="event-detail-text"><strong>Sunday, 10th January 2027</strong></span>
-      </div>
-      <div class="event-detail">
-        <span class="event-detail-icon">🕖</span>
-        <span class="event-detail-text">After <strong>Namaz e Maghrib</strong></span>
-      </div>
-      <div class="event-detail">
-        <span class="event-detail-icon">📍</span>
-        <span class="event-detail-text"><strong>Masjid e Abubakar</strong><br/>Bilal Nagar</span>
-      </div>
+    <!-- Nikah -->
+    <div class="ev-card reveal-left">
+      <div class="ev-stripe"></div>
+      <div class="ev-icon-wrap">🕌</div>
+      <div class="ev-name">Aqd e Nikah</div>
+      <div class="ev-title">Nikah Ceremony</div>
+      <div class="ev-row"><span class="ev-ico">📅</span><span class="ev-txt"><strong>Sunday, 10th January 2027</strong></span></div>
+      <div class="ev-row"><span class="ev-ico">🕖</span><span class="ev-txt">After <strong>Namaz e Maghrib</strong></span></div>
+      <div class="ev-row"><span class="ev-ico">📍</span><span class="ev-txt"><strong>Masjid e Abubakar</strong><br/>Bilal Nagar</span></div>
     </div>
 
-    <!-- RECEPTION CARD -->
-    <div class="event-card fade-in">
-      <div class="event-card-stripe"></div>
-      <div class="event-icon-wrap">🌿</div>
-      <div class="event-name">Walima Reception</div>
-      <div class="event-title">Wedding Celebration</div>
-      <div class="event-detail">
-        <span class="event-detail-icon">📅</span>
-        <span class="event-detail-text"><strong>Sunday, 10th January 2027</strong></span>
-      </div>
-      <div class="event-detail">
-        <span class="event-detail-icon">🌙</span>
-        <span class="event-detail-text">Evening Onwards</span>
-      </div>
-      <div class="event-detail">
-        <span class="event-detail-icon">📍</span>
-        <span class="event-detail-text"><strong>Sahil Lawn</strong><br/>Badnera</span>
-      </div>
+    <!-- Reception -->
+    <div class="ev-card reveal-right">
+      <div class="ev-stripe"></div>
+      <div class="ev-icon-wrap">🌿</div>
+      <div class="ev-name">Walima Reception</div>
+      <div class="ev-title">Wedding Celebration</div>
+      <div class="ev-row"><span class="ev-ico">📅</span><span class="ev-txt"><strong>Sunday, 10th January 2027</strong></span></div>
+      <div class="ev-row"><span class="ev-ico">🌙</span><span class="ev-txt">Evening Onwards</span></div>
+      <div class="ev-row"><span class="ev-ico">📍</span><span class="ev-txt"><strong>Sahil Lawn</strong><br/>Badnera</span></div>
       <a href="https://share.google/cPaxANpkdfNBbzW3W" target="_blank" class="map-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-        </svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         View Venue on Maps
       </a>
     </div>
   </div>
 </section>
 
-<div class="page-sep"></div>
+<div class="stripe"></div>
 
-<!-- ══════════════════════════════════
-     PAGE 4  ·  COUNTDOWN
-══════════════════════════════════ -->
-<section class="page" id="countdown">
-
-  <!-- light botanical on green bg -->
-  <svg class="botanical-left" viewBox="0 0 55 260" width="55" xmlns="http://www.w3.org/2000/svg" style="opacity:0.3">
-    <path d="M45,0 Q15,65 35,130 Q5,195 25,260" fill="none" stroke="#4a9b6e" stroke-width="2"/>
-    <ellipse cx="22" cy="45"  rx="22" ry="9" fill="#336b52" transform="rotate(-55,22,45)"/>
-    <ellipse cx="12" cy="90"  rx="24" ry="10" fill="#2a5c44" transform="rotate(-72,12,90)"/>
-    <ellipse cx="28" cy="130" rx="22" ry="9" fill="#336b52" transform="rotate(-45,28,130)"/>
-    <ellipse cx="10" cy="170" rx="22" ry="9" fill="#2a5c44" transform="rotate(-68,10,170)"/>
-    <ellipse cx="26" cy="210" rx="20" ry="8" fill="#336b52" transform="rotate(-50,26,210)"/>
+<!-- ════ SECTION 4 — COUNTDOWN (green) ════ -->
+<section class="section" id="countdown">
+  <svg class="bot-l" viewBox="0 0 55 280" width="50" xmlns="http://www.w3.org/2000/svg" style="opacity:0.25;">
+    <path d="M44,0 Q14,70 34,140 Q4,210 24,280" fill="none" stroke="#4a9b6e" stroke-width="2"/>
+    <ellipse cx="22" cy="48"  rx="22" ry="9" fill="#336b52" transform="rotate(-55,22,48)"/>
+    <ellipse cx="12" cy="92"  rx="24" ry="10" fill="#2a5c44" transform="rotate(-72,12,92)"/>
+    <ellipse cx="28" cy="140" rx="22" ry="9" fill="#336b52" transform="rotate(-45,28,140)"/>
+    <ellipse cx="10" cy="188" rx="22" ry="9" fill="#2a5c44" transform="rotate(-68,10,188)"/>
+    <ellipse cx="26" cy="236" rx="20" ry="8" fill="#336b52" transform="rotate(-50,26,236)"/>
   </svg>
-  <svg class="botanical-right" viewBox="0 0 55 260" width="55" xmlns="http://www.w3.org/2000/svg" style="opacity:0.3">
-    <path d="M45,0 Q15,65 35,130 Q5,195 25,260" fill="none" stroke="#4a9b6e" stroke-width="2"/>
-    <ellipse cx="22" cy="45"  rx="22" ry="9" fill="#336b52" transform="rotate(-55,22,45)"/>
-    <ellipse cx="12" cy="90"  rx="24" ry="10" fill="#2a5c44" transform="rotate(-72,12,90)"/>
-    <ellipse cx="28" cy="130" rx="22" ry="9" fill="#336b52" transform="rotate(-45,28,130)"/>
-    <ellipse cx="10" cy="170" rx="22" ry="9" fill="#2a5c44" transform="rotate(-68,10,170)"/>
-    <ellipse cx="26" cy="210" rx="20" ry="8" fill="#336b52" transform="rotate(-50,26,210)"/>
+  <svg class="bot-r" viewBox="0 0 55 280" width="50" xmlns="http://www.w3.org/2000/svg" style="opacity:0.25;">
+    <path d="M44,0 Q14,70 34,140 Q4,210 24,280" fill="none" stroke="#4a9b6e" stroke-width="2"/>
+    <ellipse cx="22" cy="48"  rx="22" ry="9" fill="#336b52" transform="rotate(-55,22,48)"/>
+    <ellipse cx="12" cy="92"  rx="24" ry="10" fill="#2a5c44" transform="rotate(-72,12,92)"/>
+    <ellipse cx="28" cy="140" rx="22" ry="9" fill="#336b52" transform="rotate(-45,28,140)"/>
+    <ellipse cx="10" cy="188" rx="22" ry="9" fill="#2a5c44" transform="rotate(-68,10,188)"/>
+    <ellipse cx="26" cy="236" rx="20" ry="8" fill="#336b52" transform="rotate(-50,26,236)"/>
   </svg>
 
-  <div class="content">
-    <div class="section-title fade-in">The Big Day Arrives In</div>
-    <div class="section-heading fade-in shimmer-gold">Counting Down</div>
+  <div class="cnt">
+    <div class="sec-title reveal">The Big Day Arrives In</div>
+    <div class="sec-head reveal">Counting Down</div>
 
-    <div class="countdown-grid">
-      <div class="countdown-box"><span class="countdown-num" id="days">--</span><span class="countdown-label">Days</span></div>
-      <div class="countdown-box"><span class="countdown-num" id="hours">--</span><span class="countdown-label">Hours</span></div>
-      <div class="countdown-box"><span class="countdown-num" id="minutes">--</span><span class="countdown-label">Mins</span></div>
-      <div class="countdown-box"><span class="countdown-num" id="seconds">--</span><span class="countdown-label">Secs</span></div>
+    <div class="flip-grid">
+      <div class="flip-box"><div class="flip-inner"><span class="flip-num" id="days">--</span><span class="flip-lbl">Days</span></div></div>
+      <div class="flip-box"><div class="flip-inner"><span class="flip-num" id="hours">--</span><span class="flip-lbl">Hours</span></div></div>
+      <div class="flip-box"><div class="flip-inner"><span class="flip-num" id="mins">--</span><span class="flip-lbl">Mins</span></div></div>
+      <div class="flip-box"><div class="flip-inner"><span class="flip-num" id="secs">--</span><span class="flip-lbl">Secs</span></div></div>
     </div>
 
-    <div class="divider">
-      <div class="divider-line"></div>
-      <div class="divider-diamond"></div>
-      <div class="divider-line"></div>
-    </div>
+    <div class="divider reveal"><div class="div-line"></div><div class="div-dia"></div><div class="div-line"></div></div>
 
-    <p class="rsvp-note fade-in">
-      We joyfully request the honour of your presence<br/>as we celebrate this blessed union.<br/><br/>
+    <p class="rsvp-note reveal">
+      We joyfully request the honour of your presence<br/>
+      as we celebrate this blessed union.<br/><br/>
       <em>Your prayers and blessings mean the world to us.</em>
     </p>
 
-    <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20270110T183000%0ADTEND:20270110T235900%0ASUMMARY:Atiba %26 Rashid Wedding%0ADESCRIPTION:Nikah after Maghrib at Masjid e Abubakar%2C Bilal Nagar. Reception at Sahil Lawn%2C Badnera.%0AEND:VEVENT%0AEND:VCALENDAR"
-       download="AtibaxRashid_Wedding.ics" class="save-btn">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
+    <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20270110T183000%0ADTEND:20270110T235900%0ASUMMARY:Atiba %26 Rashid Wedding%0ADESCRIPTION:Nikah after Maghrib at Masjid e Abubakar%2C Bilal Nagar.%0AEND:VEVENT%0AEND:VCALENDAR"
+       download="AtibaxRashid.ics" class="save-btn reveal">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Save the Date
     </a>
   </div>
 </section>
 
-<div class="page-sep"></div>
+<div class="stripe"></div>
 
-<!-- ══════════════════════════════════
-     PAGE 5  ·  CLOSING
-══════════════════════════════════ -->
-<section class="page" id="footer-page" style="min-height:auto; padding:50px 24px 70px;">
+<!-- ════ SECTION 5 — CLOSING ════ -->
+<section class="section" id="closing" style="min-height:auto;padding:55px 24px 70px;">
+  <div class="cnt">
+    <div class="divider reveal"><div class="div-line"></div><div class="div-dia"></div><div class="div-line"></div></div>
 
-  <div class="content">
-    <div class="divider fade-in"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
-    <div class="footer-couple fade-in">Atiba & Rashid</div>
-    <div class="footer-date-line fade-in">10 · 01 · 2027</div>
-    <div class="divider fade-in"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+    <div class="closing-couple reveal">Atiba & Rashid</div>
+    <div class="closing-date reveal">10 · 01 · 2027</div>
 
-    <p class="footer-quote fade-in">
+    <div class="divider reveal"><div class="div-line"></div><div class="div-dia"></div><div class="div-line"></div></div>
+
+    <div class="verse-box reveal">
       "And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquility with them, and He has put love and mercy between your hearts."<br/>
-      <em>— Surah Ar-Rum, 30:21</em>
-    </p>
+      <span>— Surah Ar-Rum, 30:21</span>
+    </div>
 
-    <!-- Summary card on green -->
-    <div class="summary-card fade-in">
-      <div class="event-name" style="text-align:center; margin-bottom:16px; font-size:0.65rem;">In Summary</div>
-
-      <div class="event-detail">
-        <span class="event-detail-icon">🕌</span>
-        <span class="event-detail-text">
-          <strong>Aqd e Nikah</strong><br/>
+    <!-- Summary green card -->
+    <div class="sum-card reveal">
+      <div class="ev-name" style="text-align:center;margin-bottom:16px;">In Summary</div>
+      <div class="ev-row">
+        <span class="ev-ico" style="color:var(--gold3);">🕌</span>
+        <span class="ev-txt" style="color:rgba(240,222,176,0.8);">
+          <strong style="color:var(--goldpal);">Aqd e Nikah</strong><br/>
           Masjid e Abubakar, Bilal Nagar<br/>
           After Namaz e Maghrib · 10 Jan 2027
         </span>
       </div>
-
-      <div style="height:14px; border-left:1px dashed rgba(201,168,76,0.3); margin:10px auto; width:1px;"></div>
-
-      <div class="event-detail">
-        <span class="event-detail-icon">🌹</span>
-        <span class="event-detail-text">
-          <strong>Walima Reception</strong><br/>
+      <div style="height:14px;border-left:1px dashed rgba(228,193,112,0.3);margin:10px auto;width:1px;"></div>
+      <div class="ev-row">
+        <span class="ev-ico" style="color:var(--gold3);">🌹</span>
+        <span class="ev-txt" style="color:rgba(240,222,176,0.8);">
+          <strong style="color:var(--goldpal);">Walima Reception</strong><br/>
           Sahil Lawn, Badnera<br/>
           Evening · 10 Jan 2027
         </span>
       </div>
-
-      <div style="text-align:center; margin-top:16px;">
+      <div style="text-align:center;margin-top:18px;">
         <a href="https://share.google/cPaxANpkdfNBbzW3W" target="_blank" class="map-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-          </svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           Venue Location
         </a>
       </div>
     </div>
 
-    <!-- Bottom botanical decoration -->
-    <svg viewBox="0 0 320 80" width="300" style="display:block;margin:20px auto 0;" xmlns="http://www.w3.org/2000/svg">
+    <!-- Animated closing botanical -->
+    <svg class="closing-floral reveal" viewBox="0 0 320 80" width="290" xmlns="http://www.w3.org/2000/svg">
       <line x1="0" y1="40" x2="100" y2="40" stroke="#b8862a" stroke-width="0.7" opacity="0.4"/>
       <line x1="220" y1="40" x2="320" y2="40" stroke="#b8862a" stroke-width="0.7" opacity="0.4"/>
-      <!-- center wreath mini -->
-      <ellipse cx="130" cy="30" rx="20" ry="8"  fill="#2a5c44" transform="rotate(-15,130,30)" opacity="0.7"/>
+      <ellipse cx="130" cy="30" rx="20" ry="8"  fill="#2a5c44" transform="rotate(-15,130,30)" opacity="0.7">
+        <animateTransform attributeName="transform" type="rotate" values="-15 130 30;-12 130 30;-15 130 30" dur="4s" repeatCount="indefinite"/>
+      </ellipse>
       <ellipse cx="160" cy="20" rx="18" ry="7"  fill="#1f4433" opacity="0.7"/>
-      <ellipse cx="190" cy="30" rx="20" ry="8"  fill="#2a5c44" transform="rotate(15,190,30)" opacity="0.7"/>
-      <ellipse cx="142" cy="50" rx="16" ry="6"  fill="#2a5c44" transform="rotate(-8,142,50)" opacity="0.6"/>
-      <ellipse cx="178" cy="50" rx="16" ry="6"  fill="#2a5c44" transform="rotate(8,178,50)" opacity="0.6"/>
-      <circle cx="160" cy="10" r="6" fill="#f5e8d0" opacity="0.9"/><circle cx="160" cy="10" r="2.5" fill="#d9a899"/>
-      <circle cx="128" cy="18" r="4" fill="#f5e8d0" opacity="0.8"/><circle cx="128" cy="18" r="1.5" fill="#d9a899"/>
-      <circle cx="192" cy="18" r="4" fill="#f5e8d0" opacity="0.8"/><circle cx="192" cy="18" r="1.5" fill="#d9a899"/>
+      <ellipse cx="190" cy="30" rx="20" ry="8"  fill="#2a5c44" transform="rotate(15,190,30)" opacity="0.7">
+        <animateTransform attributeName="transform" type="rotate" values="15 190 30;12 190 30;15 190 30" dur="4s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="142" cy="50" rx="16" ry="6"  fill="#2a5c44" opacity="0.6"/>
+      <ellipse cx="178" cy="50" rx="16" ry="6"  fill="#2a5c44" opacity="0.6"/>
+      <circle cx="160" cy="10" r="6" fill="#f5e8d0" opacity="0.9"><animate attributeName="r" values="5;7;5" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="160" cy="10" r="2.5" fill="#d9a899"/>
+      <circle cx="128" cy="18" r="4" fill="#f5e8d0" opacity="0.8"><animate attributeName="r" values="3;5;3" dur="3.5s" repeatCount="indefinite"/></circle>
+      <circle cx="128" cy="18" r="1.5" fill="#d9a899"/>
+      <circle cx="192" cy="18" r="4" fill="#f5e8d0" opacity="0.8"><animate attributeName="r" values="3;5;3" dur="2.8s" repeatCount="indefinite"/></circle>
+      <circle cx="192" cy="18" r="1.5" fill="#d9a899"/>
     </svg>
 
-    <p class="jzk fade-in">JazakAllah Khair &nbsp;·&nbsp; جزاك الله خيراً</p>
+    <p class="jzk reveal">JazakAllah Khair &nbsp;·&nbsp; جزاك الله خيراً</p>
   </div>
 </section>
 
-</div><!-- /pages -->
+</div><!-- /main -->
 
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
 <script>
-  // Countdown to Maghrib time approx 6:30 PM on 10 Jan 2027
-  const wedding = new Date('2027-01-10T18:30:00');
-  function updateCountdown() {
-    const diff = wedding - new Date();
-    if (diff <= 0) {
-      ['days','hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '00');
-      return;
-    }
-    document.getElementById('days').textContent    = String(Math.floor(diff/86400000)).padStart(2,'0');
-    document.getElementById('hours').textContent   = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-    document.getElementById('minutes').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    document.getElementById('seconds').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+/* ─── ENVELOPE OPEN ─── */
+let envelopeOpened = false;
+function openEnvelope(){
+  if(envelopeOpened) return;
+  envelopeOpened = true;
 
-  // Scroll fade-in
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  // Open flap
+  document.getElementById('envFlap').classList.add('open');
+
+  // Letter emerges
+  setTimeout(()=>{
+    document.getElementById('envLetter').classList.add('out');
+  }, 700);
+
+  // Burst particles then show main
+  setTimeout(()=>{
+    burstParticles();
+  }, 1200);
+
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('hidden');
+    document.getElementById('main').classList.add('visible');
+  }, 1800);
+}
+
+// Auto-open after 4s
+setTimeout(openEnvelope, 4000);
+document.getElementById('envWrap').addEventListener('click', openEnvelope);
+document.getElementById('splashHint').addEventListener('click', openEnvelope);
+
+/* ─── PARTICLES ─── */
+const canvas = document.getElementById('particleCanvas');
+const ctx    = canvas.getContext('2d');
+let   W = canvas.width  = window.innerWidth;
+let   H = canvas.height = window.innerHeight;
+
+window.addEventListener('resize', ()=>{
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+});
+
+const particles = [];
+
+class Particle{
+  constructor(x, y, burst){
+    this.x    = x || Math.random()*W;
+    this.y    = y || -20;
+    this.size = burst ? (Math.random()*6+2) : (Math.random()*5+2);
+    this.type = burst ? (Math.random()<0.5?'gold':'petal') : (Math.random()<0.4?'gold':'petal');
+    this.vx   = burst ? (Math.random()-0.5)*6 : (Math.random()-0.5)*0.8;
+    this.vy   = burst ? (Math.random()*-4-2)   : (Math.random()*1.5+0.5);
+    this.alpha= 1;
+    this.rot  = Math.random()*360;
+    this.rotV = (Math.random()-0.5)*3;
+    this.swing= Math.random()*2;
+    this.swingS= Math.random()*0.03;
+    this.swingO= Math.random()*Math.PI*2;
+    this.gravity = burst ? 0.15 : 0;
+    this.life   = 0;
+    this.maxLife= burst ? 80 : (Math.random()*120+80);
+  }
+  update(){
+    this.life++;
+    this.x  += this.vx + Math.sin(this.life*this.swingS+this.swingO)*this.swing;
+    this.y  += this.vy;
+    this.vy += this.gravity;
+    this.rot += this.rotV;
+    if(!this.gravity) this.alpha = this.life>this.maxLife*0.7 ? 1-(this.life-this.maxLife*0.7)/(this.maxLife*0.3) : 1;
+    else              this.alpha = Math.max(0, 1-this.life/this.maxLife);
+  }
+  draw(){
+    ctx.save();
+    ctx.globalAlpha = Math.max(0,this.alpha);
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot*Math.PI/180);
+    if(this.type==='gold'){
+      ctx.fillStyle='#e4c170';
+      ctx.beginPath();
+      for(let i=0;i<4;i++){
+        ctx.rotate(Math.PI/2);
+        ctx.moveTo(0,0);
+        ctx.lineTo(this.size,this.size*0.4);
+        ctx.lineTo(this.size*2,0);
+        ctx.lineTo(this.size,this.size*0.4);
+      }
+      ctx.closePath();
+      ctx.fill();
+    } else {
+      // petal
+      ctx.fillStyle = Math.random()<0.5 ? '#f5e8d0' : '#d9c8b0';
+      ctx.beginPath();
+      ctx.ellipse(0,0,this.size,this.size*0.5,0,0,Math.PI*2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+  dead(){ return this.life>=this.maxLife || this.y>H+30; }
+}
+
+function burstParticles(){
+  for(let i=0;i<60;i++){
+    particles.push(new Particle(W/2, H/2, true));
+  }
+}
+
+// Continuous gentle fall
+function spawnFalling(){
+  if(envelopeOpened && particles.filter(p=>!p.gravity).length<25){
+    particles.push(new Particle());
+  }
+}
+
+function animLoop(){
+  ctx.clearRect(0,0,W,H);
+  spawnFalling();
+  for(let i=particles.length-1;i>=0;i--){
+    particles[i].update();
+    particles[i].draw();
+    if(particles[i].dead()) particles.splice(i,1);
+  }
+  requestAnimationFrame(animLoop);
+}
+animLoop();
+
+/* ─── SCROLL REVEAL ─── */
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revObs.observe(el));
+
+/* ─── FLIP COUNTDOWN ─── */
+const wedding = new Date('2027-01-10T18:30:00');
+const ids = {days:'days',hours:'hours',minutes:'mins',seconds:'secs'};
+const prev = {days:null,hours:null,minutes:null,seconds:null};
+
+function getTime(){
+  const diff = wedding - new Date();
+  if(diff<=0) return {days:0,hours:0,minutes:0,seconds:0};
+  return {
+    days:    Math.floor(diff/86400000),
+    hours:   Math.floor((diff%86400000)/3600000),
+    minutes: Math.floor((diff%3600000)/60000),
+    seconds: Math.floor((diff%60000)/1000),
+  };
+}
+
+function updateTimer(){
+  const t = getTime();
+  for(const key in ids){
+    const val = String(t[key]).padStart(2,'0');
+    const el  = document.getElementById(ids[key]);
+    if(prev[key]!==val){
+      el.classList.remove('flip-anim');
+      void el.offsetWidth;
+      el.textContent = val;
+      el.classList.add('flip-anim');
+      prev[key] = val;
+    }
+  }
+}
+updateTimer();
+setInterval(updateTimer,1000);
 </script>
 </body>
 </html>
